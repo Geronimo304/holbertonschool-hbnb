@@ -52,7 +52,7 @@ The user receives a clear, formatted response.
 
 This architecture allows the system to be modular, easy to maintain, and scalable.
 
-![WhatsApp Image 2025-06-08 at 6.35.08 PM.jpeg](WhatsApp_Image_2025-06-08_at_6.35.08_PM.jpeg)
+![High-Level Package Diagram.jpeg](High-Level Package Diagram.jpeg)
 
 ### **Class Diagram**
 
@@ -95,7 +95,7 @@ If everything is valid, the new user is saved.
 
 A successful registration confirmation is sent.
 
-![WhatsApp Image 2025-06-08 at 2.26.07 PM.jpeg](WhatsApp_Image_2025-06-08_at_2.26.07_PM.jpeg)
+![register.jpeg](register.jpeg)
 
 ### **Creating a Listing:**
 
@@ -109,7 +109,7 @@ If not, a new one is created in the database.
 
 The operation is confirmed.
 
-![WhatsApp Image 2025-06-08 at 2.26.06 PM.jpeg](WhatsApp_Image_2025-06-08_at_2.26.06_PM.jpeg)
+![places.jpeg](places.jpeg)
 
 ### **Submitting a Review:**
 
@@ -117,7 +117,7 @@ The user writes a review from the interface.The system validates that a user and
 
 A success notification is returned.
 
-![WhatsApp Image 2025-06-08 at 2.26.06 PM (2).jpeg](WhatsApp_Image_2025-06-08_at_2.26.06_PM_(2).jpeg)
+![review.jpeg](review.jpeg)
 
 ### **Listing Accommodations:**
 
@@ -129,7 +129,7 @@ The results are organized.
 
 The results are sent back to the user.
 
-![WhatsApp Image 2025-06-08 at 2.26.06 PM (1).jpeg](WhatsApp_Image_2025-06-08_at_2.26.06_PM_(1).jpeg)
+![list_places.jpeg](list_places.jpeg)
 
 ## **Design Decisions**
 
