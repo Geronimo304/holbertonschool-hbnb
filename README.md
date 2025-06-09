@@ -95,7 +95,7 @@ If everything is valid, the new user is saved.
 
 A successful registration confirmation is sent.
 
-![register](register.peg)
+![register](register.jpeg)
 
 ### **Creating a Listing:**
 
