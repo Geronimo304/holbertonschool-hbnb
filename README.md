@@ -95,7 +95,7 @@ If everything is valid, the new user is saved.
 
 A successful registration confirmation is sent.
 
-![register](register.jpeg)
+![register](register)
 
 ### **Creating a Listing:**
 
@@ -117,7 +117,7 @@ The user writes a review from the interface.The system validates that a user and
 
 A success notification is returned.
 
-![review.jpeg](review.jpeg)
+![review](review)
 
 ### **Listing Accommodations:**
 
