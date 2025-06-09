@@ -52,7 +52,7 @@ The user receives a clear, formatted response.
 
 This architecture allows the system to be modular, easy to maintain, and scalable.
 
-![High-Level Package Diagram.jpeg](High-Level Package Diagram.jpeg)
+![High-Level Package Diagram](High-Level Package Diagram)
 
 ### **Class Diagram**
 
@@ -109,7 +109,7 @@ If not, a new one is created in the database.
 
 The operation is confirmed.
 
-![places.jpeg](places.jpeg)
+![places](places)
 
 ### **Submitting a Review:**
 
@@ -129,7 +129,7 @@ The results are organized.
 
 The results are sent back to the user.
 
-![list_places.jpeg](list_places.jpeg)
+![list_places(list_places)
 
 ## **Design Decisions**
 
