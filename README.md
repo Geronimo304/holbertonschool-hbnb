@@ -129,7 +129,7 @@ The results are organized.
 
 The results are sent back to the user.
 
-![list_places(list_places)
+![list_places](list_places)
 
 ## **Design Decisions**
 
