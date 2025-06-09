@@ -52,7 +52,7 @@ The user receives a clear, formatted response.
 
 This architecture allows the system to be modular, easy to maintain, and scalable.
 
-                                                               ![diagram](diagram)
+![diagram](diagram)
 
 ### **Class Diagram**
 
