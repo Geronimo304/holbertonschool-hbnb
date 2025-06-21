@@ -1,4 +1,5 @@
-from basemodel import BaseModel
+from app.models.basemodel import BaseModel
+import uuid
 
 class Amenity(BaseModel):
     def __init__(self, name):

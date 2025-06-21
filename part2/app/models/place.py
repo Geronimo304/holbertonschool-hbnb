@@ -1,7 +1,8 @@
-from basemodel import BaseModel
-from user import User
-from review import Review
-from amenity import Amenity
+from app.models.basemodel import BaseModel
+from app.models.user import User
+from app.models.review import Review
+from app.models.amenity import Amenity
+import uuid
 
 class Place(BaseModel):
     def __init__(self, title, description, price, latitude, longitude, owner):

@@ -1,9 +1,10 @@
-from basemodel import BaseModel
-from place import Place
-from user import User
+from app.models.basemodel import BaseModel
+from app.models.user import User
+import uuid
 
 class Review(BaseModel):
     def __init__(self, text, rating, place, user):
+        from app.models.place import Place
         super().__init__()
 
         if not text or len(text) > 100:

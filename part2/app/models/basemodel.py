@@ -8,7 +8,7 @@ class BaseModel:
         self.update_at = datetime.now()
 
     def save(self):
-        self.__updated_at = datetime.now()
+        self.updated_at = datetime.now()
 
     def update(self, data):
         for key, value in data.items():
