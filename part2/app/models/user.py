@@ -1,4 +1,5 @@
-from basemodel import BaseModel
+from app.models.basemodel import BaseModel
+import uuid
 
 class User(BaseModel):
     def __init__(self, first_name, last_name, email, is_admin=False):

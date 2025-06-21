@@ -3,9 +3,9 @@ from datetime import datetime
 
 class BaseModel:
     def __init__(self):
-        self.__id = str(uuid.uuid4())
-        self.__created_at = datetime.now()
-        self.__update_at = datetime.now()
+        self.id = str(uuid.uuid4())
+        self.created_at = datetime.now()
+        self.update_at = datetime.now()
 
     def save(self):
         self.__updated_at = datetime.now()
