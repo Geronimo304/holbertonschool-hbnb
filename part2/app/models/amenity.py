@@ -1,6 +1,6 @@
-import SuperClase
+from basemodel import BaseModel
 
-class Amenity(SuperClase):
+class Amenity(BaseModel):
     def __init__(self, name):
         super().__init__()
 

@@ -1,7 +1,9 @@
-import SuperClase
+from basemodel import BaseModel
 from user import User
+from review import Review
+from amenity import Amenity
 
-class Place(SuperClase):
+class Place(BaseModel):
     def __init__(self, title, description, price, latitude, longitude, owner):
         super().__init__()
 
@@ -23,6 +25,16 @@ class Place(SuperClase):
             raise ValueError("longitud debe ser mayor a -180 y menor a 180")
         self.longitude = longitude
 
-        if not isinstance(owner, user):
+        if not isinstance(owner, User):
             raise ValueError("Debe asignarse un propietario")
         self.owner = owner
+
+    def add_review(self, review):
+        if not isinstance(review, Review):
+            raise ValueError("Solo se pueden agregar objetos de tipo Review")
+        self.reviews.append(review)
+
+    def add_amenity(self, amenity):
+        if not isinstance(amenity, Amenity):
+            raise ValueError("Solo se pueden agregar objetos de tipo Amenity")
+        self.amenities.append(amenity)

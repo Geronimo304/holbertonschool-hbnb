@@ -1,14 +1,14 @@
 import uuid
 from datetime import datetime
 
-class SuperClass:
+class BaseModel:
     def __init__(self):
         self.__id = str(uuid.uuid4())
         self.__created_at = datetime.now()
         self.__update_at = datetime.now()
 
     def save(self):
-        self.updated_at = datetime.now()
+        self.__updated_at = datetime.now()
 
     def update(self, data):
         for key, value in data.items():

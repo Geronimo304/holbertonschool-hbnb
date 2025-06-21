@@ -1,8 +1,8 @@
-import SuperClase
+from basemodel import BaseModel
 from place import Place
 from user import User
 
-class Review(SuperClase):
+class Review(BaseModel):
     def __init__(self, text, rating, place, user):
         super().__init__()
 
