@@ -1,4 +1,4 @@
-# Guardar el contenido del README sin mejoras ni conclusión en un archivo para descargar
+
 
 readme_content = """# HBNB API - Proyecto RESTful con Flask
 
