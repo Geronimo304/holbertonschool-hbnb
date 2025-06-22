@@ -1,4 +1,4 @@
-"""# HolbertonBnB - Part 2
+# HolbertonBnB - Part 2
 
 Este proyecto es la continuación de **HolbertonBnB**, una aplicación inspirada en el funcionamiento de plataformas como AirBnB. Desarrollado como parte del programa de estudios de Holberton School, el objetivo de esta segunda parte es crear una **API RESTful** utilizando **Flask** y **Flask-RESTx**, aplicando conceptos clave como:
 
