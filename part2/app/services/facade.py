@@ -97,7 +97,6 @@ class HBnBFacade:
     def delete_review(self, review_id):
         review = self.get_review(review_id)
         if review:
-            review.place.reviews.remove(review)
             self.review_repo.delete(review_id)
             return True
         return False
