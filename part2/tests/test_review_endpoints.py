@@ -50,5 +50,58 @@ class TestReviewEndpoints(unittest.TestCase):
         })
         self.assertEqual(response.status_code, 400)
 
+    def test_get_review_valid(self):
+        # Crear review
+        response = self.client.post('/api/v1/reviews/', json={
+            "text": "Excelente estadía",
+            "rating": 5,
+            "user_id": self.user_id,
+            "place_id": self.place_id
+        })
+        review_id = response.get_json()['id']
+
+        # Obtener
+        response = self.client.get(f'/api/v1/reviews/{review_id}')
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+        self.assertEqual(data['rating'], 5)
+
+    def test_update_review_valid(self):
+        # Crear
+        response = self.client.post('/api/v1/reviews/', json={
+            "text": "Requiere mejoras",
+            "rating": 2,
+            "user_id": self.user_id,
+            "place_id": self.place_id
+        })
+        review_id = response.get_json()['id']
+
+        # Actualizar
+        response = self.client.put(f'/api/v1/reviews/{review_id}', json={
+            "text": "Mucho mejor esta vez",
+            "rating": 4,
+            "user_id": self.user_id,
+            "place_id": self.place_id
+        })
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+        self.assertEqual(data['review']['rating'], 4)
+
+    def test_delete_review_valid(self):
+        # Crear
+        response = self.client.post('/api/v1/reviews/', json={
+            "text": "Para borrar",
+            "rating": 3,
+            "user_id": self.user_id,
+            "place_id": self.place_id
+        })
+        review_id = response.get_json()['id']
+
+        # Borrar
+        response = self.client.delete(f'/api/v1/reviews/{review_id}')
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+        self.assertIn('message', data)
+
 if __name__ == '__main__':
     unittest.main()

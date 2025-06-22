@@ -47,5 +47,53 @@ class TestPlaceEndpoints(unittest.TestCase):
         })
         self.assertIn(response.status_code, (400, 404))
 
+    def test_get_place_valid(self):
+        # Crear un nuevo place
+        response = self.client.post('/api/v1/places/', json={
+            "title": "Casa de campo",
+            "description": "Con parrillero",
+            "price": 100.0,
+            "latitude": -34.0,
+            "longitude": -56.0,
+            "owner_id": self.owner_id,
+            "amenities": [],
+            "reviews": []
+        })
+        place_id = response.get_json()['place_id']
+
+        # Obtener el place
+        response = self.client.get(f'/api/v1/places/{place_id}')
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+        self.assertEqual(data['title'], "Casa de campo")
+
+    def test_update_place_valid(self):
+        # Crear place
+        response = self.client.post('/api/v1/places/', json={
+            "title": "Casa original",
+            "description": "Algo simple",
+            "price": 80.0,
+            "latitude": -30.0,
+            "longitude": -55.0,
+            "owner_id": self.owner_id,
+            "amenities": [],
+            "reviews": []
+        })
+        place_id = response.get_json()['place_id']
+
+        # Actualizar
+        response = self.client.put(f'/api/v1/places/{place_id}', json={
+            "title": "Casa actualizada",
+            "description": "Con vista al mar",
+            "price": 110.0,
+            "latitude": -33.0,
+            "longitude": -56.0,
+            "amenities": [],
+            "reviews": []
+        })
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+        self.assertEqual(data['place']['title'], "Casa actualizada")
+
 if __name__ == '__main__':
     unittest.main()
