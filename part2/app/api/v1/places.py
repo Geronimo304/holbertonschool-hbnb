@@ -1,5 +1,7 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
+'''from flask_jwt_extended import jwt_required, get_jwt_identity'''
+from flask import request
 
 api = Namespace('places', description='Place operations')
 
@@ -29,28 +31,43 @@ place_model = api.model('Place', {
 
 @api.route('/')
 class PlaceList(Resource):
+    #@jwt_required()
     @api.expect(place_model)
     @api.response(201, 'Place successfully created')
     @api.response(400, 'Invalid input data')
     def post(self):
         """Register a new place"""
-        place_data = api.payload
+        data = api.payload
+        existing_place = facade.get_place(data['title'])
+        if existing_place:
+            return {'error': 'Place already exists'}, 400
+        
+        owner_id = data.get('owner_id')
+        if not owner_id: 
+            return {'error': 'Owner ID is required'}, 400
+        owner = facade.get_user(owner_id)
+        if not owner:
+            return {'error': 'Owner not found'}, 404
+        
+        data.pop('owner_id', None) 
+        data['owner'] = owner
 
-        try:
-            new_place = facade.create_place(place_data)
-            return {
-                'id': new_place.id,
-                'title': new_place.title,
-                'description': new_place.description,
-                'price': new_place.price,
-                'latitude': new_place.latitude,
-                'longitude': new_place.longitude,
-                'owner': new_place.owner,
-                'amenities': new_place.add_amenity
-            }, 201
-
-        except Exception as e:
-            api.abort(400, f"Error al crear el lugar: {e}")
+        n_place = facade.create_place(data)
+        return {
+            'place_id': n_place.id,
+            'title': n_place.title,
+            'description': n_place.description,
+            'price': n_place.price,
+            'latitude': n_place.latitude,
+            'longitude': n_place.longitude,
+            'owner': {
+                'id': owner.id,
+                'first_name': owner.first_name,
+                'last_name': owner.last_name,
+                'email': owner.email
+            },
+            'amenities': n_place.amenities
+        }, 201
 
     @api.response(200, 'List of places retrieved successfully')
     def get(self):

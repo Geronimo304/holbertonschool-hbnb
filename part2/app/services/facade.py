@@ -51,31 +51,8 @@ class HBnBFacade:
         return amenity
 
     def create_place(self, place_data):
-        amenities_names = place_data.pop('amenities', [])
-        owner_id = place_data.pop('owner_id', None)
-        if owner_id is None:
-            raise ValueError("Debe asignarse un propietario")
-
-        owner = self.get_user(owner_id)
-        if not owner:
-            raise ValueError("Usuario propietario no encontrado")
-
-        place = Place(
-            title=place_data['title'],
-            description=place_data['description'],
-            price=place_data['price'],
-            latitude=place_data['latitude'],
-            longitude=place_data['longitude'],
-            owner=owner
-        )
-
+        place = Place(**place_data)
         self.place_repo.add(place)
-
-        for amenity_name in amenities_names:
-            amenity = self.get_amenity_by_name(amenity_name)
-            if amenity:
-                place.add_amenity(amenity)
-
         return place
 
     def get_place(self, place_id):

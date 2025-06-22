@@ -5,7 +5,7 @@ from app.models.amenity import Amenity
 import uuid
 
 class Place(BaseModel):
-    def __init__(self, title, description, price, latitude, longitude, owner):
+    def __init__(self, title, description, price, latitude, longitude, owner, amenities=None, reviews=None):
         super().__init__()
 
         if not title or len(title) > 100:
@@ -30,6 +30,9 @@ class Place(BaseModel):
             raise ValueError("Debe asignarse un propietario")
         self.owner = owner
 
+        self.reviews = []
+        self.amenities = []
+
     def add_review(self, review):
         if not isinstance(review, Review):
             raise ValueError("Solo se pueden agregar objetos de tipo Review")
@@ -38,4 +41,5 @@ class Place(BaseModel):
     def add_amenity(self, amenity):
         if not isinstance(amenity, Amenity):
             raise ValueError("Solo se pueden agregar objetos de tipo Amenity")
-        self.amenities.append(amenity)
+        if amenity not in self.amenities:
+            self.amenities.append(amenity)
