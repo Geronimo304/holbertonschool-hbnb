@@ -43,10 +43,18 @@ class ReviewList(Resource):
 
         new_review = facade.create_review(data)
         return {
+            'id': new_review.id,
             'text': new_review.text,
             'rating': new_review.rating,
-            'user_id': new_review.user.id,
-            'place_id': new_review.place.id
+            'user':{
+                'id': user.id,
+                'first_name': user.first_name,
+                'last_name': user.last_name
+            },
+            'place':{
+                'id': place.id,
+                'title': place.title
+            }
             }, 201
 
     @api.response(200, 'List of reviews retrieved successfully')
@@ -61,8 +69,15 @@ class ReviewResource(Resource):
     @api.response(404, 'Review not found')
     def get(self, review_id):
         """Get review details by ID"""
-        # Placeholder for the logic to retrieve a review by ID
-        pass
+        review = facade.get_review(review_id)
+        if not review:
+            return {'error': 'review not found'}, 404
+        return {
+            'text': review.text,
+            'rating': review.rating,
+            'user': review.user.first_name,
+            'place': review.place.title
+            }, 200
 
     @api.expect(review_model)
     @api.response(200, 'Review updated successfully')
