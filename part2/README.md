@@ -1,74 +1,51 @@
-
 # HolbertonBnB - Part 2
 
-## Project Description
+This project is the continuation of **HolbertonBnB**, an application inspired by platforms like AirBnB. Developed as part of the **Holberton School** curriculum, the goal of this second part is to build a **RESTful API** using **Flask** and **Flask-RESTx**, applying design principles such as:
 
-This is the second part of the HolbertonBnB project, inspired by AirBnB, developed as part of the Holberton School curriculum. The objective in this phase is to implement a RESTful API using Flask and Flask-RESTx, apply object-oriented principles, and structure the application using clean architecture and design patterns like Repository and Facade. The API allows managing users, places, amenities, and reviews in a modular, testable, and extensible way.
+- Layered architecture
+- Object-oriented programming
+- SOLID principles
+- Patterns like **Repository** and **Facade**
 
-## Repository Structure
+The API allows management of the following resources: **users**, **places**, **amenities**, and **reviews**. The system is designed to be modular, testable, and scalable.
 
-The repository is structured as follows:
+---
 
-- **app/**: Main application package.
+## Project Structure
 
-  - **api/**: RESTful API endpoints grouped by resource.
-    - `v1/`: API version 1 with namespaces for users, places, amenities, and reviews.
-  
-  - **models/**: Contains entity classes and business rules.
-    - `basemodel.py`: Base class with shared attributes and methods.
-    - `user.py`, `place.py`, `review.py`, `amenity.py`: Entity definitions with validation logic.
-  
-  - **persistence/**: Handles in-memory data storage.
-    - `repository.py`: Implements the Repository pattern for CRUD operations.
-  
-  - **services/**: Business logic layer.
-    - `facade.py`: Central facade class to coordinate between repositories and API.
+```
+parte2/
+├── app/
+│   ├── api/v1/              # REST endpoints organized by resource
+│   ├── models/              # Entities and validations
+│   ├── persistence/         # In-memory storage (repositories)
+│   ├── services/            # Business logic (facades)
+├── config.py                # Global configuration
+├── run.py                   # Application entry point
+├── requirements.txt         # Project dependencies
+```
 
-- **tests/**: Unit tests for all API endpoints.
-  - `test_user_endpoints.py`, `test_place_endpoints.py`, etc.
+---
 
-- **config.py**: Application configuration settings.
-
-- **run.py**: Entry point to launch the API.
-
-- **requeriments.txt**: List of required Python packages.
-
-## System Architecture
-
-This project follows a layered architecture:
-
-- **Presentation Layer (API)**: Handles HTTP requests and responses.
-- **Business Logic Layer (Facade)**: Applies system rules and orchestrates operations.
-- **Persistence Layer (Repository)**: Provides storage functionality (in-memory in this phase).
-
-Each layer is designed to be independent and interchangeable, which supports scalability and future upgrades (e.g., replacing in-memory storage with a database).
-
-## Class Overview
-
-The main entities of the system include:
-
-- `User`: Represents a registered user of the platform.
-- `Place`: A property listed by a user.
-- `Amenity`: Extra features associated with a place.
-- `Review`: Feedback left by a user about a place.
-- `BaseModel`: Abstract class that handles common attributes like `id`, `created_at`, and `updated_at`.
-
-## Installation and Configuration
+## Requirements and Installation
 
 ### Prerequisites
 
-Ensure you have the following installed:
+- Python 3.x  
+- `pip`  
+- `virtualenv` (optional but recommended)
 
-- Python 3.x
-- pip
-
-### Install Dependencies
+### Installation
 
 ```bash
-pip install -r requeriments.txt
+git clone <repo-url>
+cd parte2
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
 ```
 
-### Run the Application
+### Running the app
 
 ```bash
 python3 run.py
@@ -76,25 +53,97 @@ python3 run.py
 
 The API will be available at: [http://127.0.0.1:5000/](http://127.0.0.1:5000/)
 
-## Example Endpoints
+---
 
-- `POST /api/v1/users/` – Create a new user  
-- `GET /api/v1/places/` – List all places  
-- `POST /api/v1/reviews/` – Add a review to a place  
-- `PUT /api/v1/amenity/<id>` – Update an amenity
+## System Architecture
+
+The system follows a layered architecture:
+
+- **Presentation (API)**: Handles HTTP requests/responses and errors.
+- **Business Logic (Facade)**: Applies rules and coordinates entities.
+- **Persistence (Repository)**: Manages storage (in-memory).
+
+> The **Facade** pattern is used to decouple the API from internal logic, exposing a clear interface.
+
+---
+
+## Main Entities
+
+- **User**: A registered user of the platform.
+- **Place**: A property listed by a user.
+- **Amenity**: Optional services for a place (WiFi, pool, etc.).
+- **Review**: Comment and rating for a place.
+- **BaseModel**: Abstract class with common attributes (`id`, `created_at`, `updated_at`).
+
+---
+
+## Validations
+
+- Email must contain `@` and `.`.
+- First and last names: max 50 characters.
+- Price must be a positive number.
+- Valid geographical coordinates.
+- Review score: between 1 and 5 stars.
+
+---
+
+## Available Endpoints
+
+| Method | Route                                      | Description                            |
+|--------|--------------------------------------------|----------------------------------------|
+| POST   | `/api/v1/users/`                           | Create a new user                      |
+| GET    | `/api/v1/users/<user_id>`                  | Retrieve user info                     |
+| PUT    | `/api/v1/users/<user_id>`                  | Update user info                       |
+| POST   | `/api/v1/places/`                          | Create a new place                     |
+| GET    | `/api/v1/places/`                          | List all places                        |
+| GET    | `/api/v1/places/<place_id>`                | Retrieve place info                    |
+| PUT    | `/api/v1/places/<place_id>`                | Update a place                         |
+| POST   | `/api/v1/amenities/`                       | Create a new amenity                   |
+| GET    | `/api/v1/amenities/`                       | List all amenities                     |
+| GET    | `/api/v1/amenities/<amenity_id>`           | Retrieve amenity info                  |
+| PUT    | `/api/v1/amenities/<amenity_id>`           | Update an amenity                      |
+| POST   | `/api/v1/reviews/`                         | Create a review                        |
+| GET    | `/api/v1/reviews/`                         | List all reviews                       |
+| GET    | `/api/v1/reviews/<review_id>`              | Retrieve a review                      |
+| PUT    | `/api/v1/reviews/<review_id>`              | Update a review                        |
+| DELETE | `/api/v1/reviews/<review_id>`              | Delete a review                        |
+| GET    | `/api/v1/places/<place_id>/reviews`        | List reviews for a specific place      |
+
+---
+
+## Data Flow - Examples
+
+### Register a User
+
+1. Client sends `POST /api/v1/users/` with JSON data.
+2. Data is validated.
+3. `facade.create_user()` is called.
+4. A `User` object is instantiated and saved.
+5. A JSON response is returned.
+
+### Create a Review
+
+1. Client sends `POST /api/v1/reviews/`.
+2. `user_id` and `place_id` are validated.
+3. The review is stored and linked to the place.
+4. A response with the review data is returned.
+
+---
 
 ## Testing
 
-You can run the tests using:
+To run automated tests:
 
 ```bash
 python3 -m unittest discover tests/
 ```
 
-Each test file validates both correct and incorrect behavior of the API.
+Each test file covers both valid and invalid scenarios for the API endpoints.
+
+---
 
 ## Authors
 
-[@GeronimoNegreira](https://github.com/Geronimo304)  
-[@AgustinLahalo](https://github.com/AgustinLahalo)  
-[@BruDosSant](https://github.com/BruDosSant)
+- [@GeronimoNegreira](https://github.com/GeronimoNegreira)  
+- [@AgustinLahalo](https://github.com/AgustinLahalo)  
+- [@BruDosSant](https://github.com/BruDosSant)
