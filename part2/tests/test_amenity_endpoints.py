@@ -1,5 +1,6 @@
 import unittest
 from app import create_app
+import uuid
 
 class TestAmenityEndpoints(unittest.TestCase):
     def setUp(self):

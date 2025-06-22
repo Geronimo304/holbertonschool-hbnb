@@ -1,16 +1,18 @@
 import unittest
 from app import create_app
+import uuid
 
 class TestReviewEndpoints(unittest.TestCase):
     def setUp(self):
         self.app = create_app()
         self.client = self.app.test_client()
 
-        # Crear usuario y place
+        # Crear usuario con email único usando uuid y place
+        unique_email = f"eva_{uuid.uuid4()}@example.com"
         user_resp = self.client.post('/api/v1/users/', json={
             "first_name": "Eva",
             "last_name": "Mendez",
-            "email": "eva@example.com"
+            "email": unique_email
         })
         self.assertEqual(user_resp.status_code, 201, msg=user_resp.get_data(as_text=True))
         user = user_resp.get_json()

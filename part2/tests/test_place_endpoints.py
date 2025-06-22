@@ -1,16 +1,18 @@
 import unittest
 from app import create_app
+import uuid
 
 class TestPlaceEndpoints(unittest.TestCase):
     def setUp(self):
         self.app = create_app()
         self.client = self.app.test_client()
 
-        # Crear usuario que será dueño del place
+        # Crear usuario con mail unico usando uuid
+        unique_email = f"lena_{uuid.uuid4()}@example.com"
         response = self.client.post('/api/v1/users/', json={
             "first_name": "Lena",
             "last_name": "Jackson",
-            "email": "lena@example.com"
+            "email": unique_email
         })
         self.assertEqual(response.status_code, 201, msg=response.get_data(as_text=True))
         user_data = response.get_json()
