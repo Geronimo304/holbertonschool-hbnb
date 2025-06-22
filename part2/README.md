@@ -144,6 +144,6 @@ Each test file covers both valid and invalid scenarios for the API endpoints.
 
 ## Authors
 
-- [@GeronimoNegreira](https://github.com/GeronimoNegreira)  
-- [@AgustinLahalo](https://github.com/AgustinLahalo)  
-- [@BruDosSant](https://github.com/BruDosSant)
+- Geronimo Negreira
+- Agustin Lahalo 
+- Bruno Dos Santos
