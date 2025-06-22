@@ -85,8 +85,22 @@ class ReviewResource(Resource):
     @api.response(400, 'Invalid input data')
     def put(self, review_id):
         """Update a review's information"""
-        # Placeholder for the logic to update a review by ID
-        pass
+        review = facade.get_review(review_id)
+        if not review:
+            return {'error': 'review not found'}, 404
+
+        review_data = api.payload
+        try:
+            updated_review = facade.update_review(review_id, review_data)
+            return {'message': 'Review updated successfully', 'review': {
+                'id': updated_review.id,
+                'rating': updated_review.rating,
+                'user': updated_review.user.first_name,
+                'place': updated_review.place.title
+            }}, 200
+
+        except ValueError as e:
+            return {'error': str(e)}, 400
 
     @api.response(200, 'Review deleted successfully')
     @api.response(404, 'Review not found')
