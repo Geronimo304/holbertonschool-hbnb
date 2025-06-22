@@ -60,8 +60,8 @@ class ReviewList(Resource):
     @api.response(200, 'List of reviews retrieved successfully')
     def get(self):
         """Retrieve a list of all reviews"""
-        # Placeholder for logic to return a list of all reviews
-        pass
+        list_review = facade.get_all_reviews()
+        return [{'id': review.id, 'text': review.text, 'rating': review.rating, 'user': review.user.first_name, 'place': review.place.title} for review in list_review], 200
 
 @api.route('/<review_id>')
 class ReviewResource(Resource):
