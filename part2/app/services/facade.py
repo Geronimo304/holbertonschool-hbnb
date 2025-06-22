@@ -26,6 +26,12 @@ class HBnBFacade:
         user = self.get_user(user_id)
         if not user:
             return None
+        if not user_data.get('first_name') or len(user_data.get('first_name')) > 50:
+            raise ValueError("El nombre es obligatorio y debe tener 50 caracteres máximo")
+        if not user_data.get('last_name') or len(user_data.get('last_name')) > 50:
+            raise ValueError("El apellido es obligatorio y debe tener 50 caracteres máximo")
+        if not user_data.get('email') or not user.validador_email(user_data.get('email')):
+            raise ValueError("El email es obligatorio y debe tener un formato válido")
 
         user.update(user_data)
         return user

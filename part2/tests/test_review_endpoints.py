@@ -1,0 +1,52 @@
+import unittest
+from app import create_app
+
+class TestReviewEndpoints(unittest.TestCase):
+    def setUp(self):
+        self.app = create_app()
+        self.client = self.app.test_client()
+
+        # Crear usuario y place
+        user_resp = self.client.post('/api/v1/users/', json={
+            "first_name": "Eva",
+            "last_name": "Mendez",
+            "email": "eva@example.com"
+        })
+        self.assertEqual(user_resp.status_code, 201, msg=user_resp.get_data(as_text=True))
+        user = user_resp.get_json()
+        self.user_id = user['id']
+
+        place_resp = self.client.post('/api/v1/places/', json={
+            "title": "Loft moderno",
+            "description": "Céntrico",
+            "price": 90.0,
+            "latitude": -34.9,
+            "longitude": -56.2,
+            "owner_id": self.user_id,
+            "amenities": [],
+            "reviews": []
+        })
+        self.assertEqual(place_resp.status_code, 201, msg=place_resp.get_data(as_text=True))
+        place = place_resp.get_json()
+        self.place_id = place['place_id']
+
+    def test_create_review_valid(self):
+        response = self.client.post('/api/v1/reviews/', json={
+            "text": "Muy cómodo",
+            "rating": 4,
+            "user_id": self.user_id,
+            "place_id": self.place_id
+        })
+        self.assertEqual(response.status_code, 201)
+
+    def test_create_review_invalid_rating(self):
+        response = self.client.post('/api/v1/reviews/', json={
+            "text": "",
+            "rating": 10,
+            "user_id": self.user_id,
+            "place_id": self.place_id
+        })
+        self.assertEqual(response.status_code, 400)
+
+if __name__ == '__main__':
+    unittest.main()

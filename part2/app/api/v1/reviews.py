@@ -41,21 +41,24 @@ class ReviewList(Resource):
         data.pop('place_id', None) 
         data['place'] = place
 
-        new_review = facade.create_review(data)
-        return {
-            'id': new_review.id,
-            'text': new_review.text,
-            'rating': new_review.rating,
-            'user':{
-                'id': user.id,
-                'first_name': user.first_name,
-                'last_name': user.last_name
-            },
-            'place':{
-                'id': place.id,
-                'title': place.title
-            }
-            }, 201
+        try:
+            new_review = facade.create_review(data)
+            return {
+                'id': new_review.id,
+                'text': new_review.text,
+                'rating': new_review.rating,
+                'user':{
+                    'id': user.id,
+                    'first_name': user.first_name,
+                    'last_name': user.last_name
+                },
+                'place':{
+                    'id': place.id,
+                    'title': place.title
+                }
+                }, 201
+        except ValueError as e:
+            return {'error': str(e)}, 400
 
     @api.response(200, 'List of reviews retrieved successfully')
     def get(self):
