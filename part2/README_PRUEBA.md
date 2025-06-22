@@ -1,15 +1,18 @@
+"""# HolbertonBnB - Part 2
 
+Este proyecto es la continuación de **HolbertonBnB**, una aplicación inspirada en el funcionamiento de plataformas como AirBnB. Desarrollado como parte del programa de estudios de Holberton School, el objetivo de esta segunda parte es crear una **API RESTful** utilizando **Flask** y **Flask-RESTx**, aplicando conceptos clave como:
 
-readme_content = """# HBNB API - Proyecto RESTful con Flask
+- Arquitectura en capas
+- Principios de diseño SOLID
+- Programación orientada a objetos
+- Patrones como **Repository** y **Facade**
 
-Este proyecto corresponde a la segunda parte del proyecto HolbertonBnB, inspirado en AirBnB y desarrollado como parte del programa de Holberton School. Su objetivo principal es implementar una API RESTful usando Flask y Flask-RESTx, aplicando principios de programación orientada a objetos y una arquitectura limpia con patrones como Repository y Facade.
-
-La API permite gestionar usuarios, propiedades (places), servicios (amenities) y reseñas (reviews), estructurando el sistema de forma modular, testeable y escalable.
+La API permite gestionar de manera estructurada los principales recursos del sistema: **usuarios**, **propiedades (places)**, **servicios adicionales (amenities)** y **reseñas (reviews)**. Toda la lógica está organizada para permitir modularidad, testeo y escalabilidad futura.
 
 ## Autores
 
-- @GeronimoNegreira
-- @AgustinLahalo
+- @GeronimoNegreira  
+- @AgustinLahalo  
 - @BruDosSant
 
 ---
@@ -18,7 +21,7 @@ La API permite gestionar usuarios, propiedades (places), servicios (amenities) y
 
 ### Requisitos previos
 
-- Python 3.x
+- Python 3.x  
 - pip
 
 ### Instalación
@@ -136,7 +139,7 @@ python3 -m unittest discover tests/
 Cada archivo de prueba cubre escenarios correctos e incorrectos para los endpoints de la API.
 """
 
-with open("/mnt/data/README_HBNB_FINAL.md", "w") as f:
-f.write(readme_content)
+with open("/mnt/data/README_HBNB_FINAL_CON_DESCRIPCION.md", "w") as f:
+f.write(readme_with_description)
 
-"/mnt/data/README_HBNB_FINAL.md"
+"/mnt/data/README_HBNB_FINAL_CON_DESCRIPCION.md"
