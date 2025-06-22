@@ -1,6 +1,5 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
-'''from flask_jwt_extended import jwt_required, get_jwt_identity'''
 from flask import request
 
 api = Namespace('places', description='Place operations')
@@ -72,8 +71,8 @@ class PlaceList(Resource):
     @api.response(200, 'List of places retrieved successfully')
     def get(self):
         """Retrieve a list of all places"""
-        # Placeholder for logic to return a list of all places
-        pass
+        list_place = facade.get_all_places()
+        return [{'id': place.id, 'title': place.title, 'price': place.price, 'owner': place.owner.first_name} for place in list_place], 200
 
 @api.route('/<place_id>')
 class PlaceResource(Resource):
