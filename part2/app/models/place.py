@@ -30,8 +30,8 @@ class Place(BaseModel):
             raise ValueError("Debe asignarse un propietario")
         self.owner = owner
 
-        self.reviews = []
-        self.amenities = []
+        self.reviews = reviews
+        self.amenities = amenities
 
     def add_review(self, review):
         if not isinstance(review, Review):

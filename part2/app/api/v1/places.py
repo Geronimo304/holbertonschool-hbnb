@@ -81,8 +81,10 @@ class PlaceResource(Resource):
     @api.response(404, 'Place not found')
     def get(self, place_id):
         """Get place details by ID"""
-        # Placeholder for the logic to retrieve a place by ID, including associated owner and amenities
-        pass
+        place = facade.get_place(place_id)
+        if not place:
+            return {'error': 'place not found'}, 404
+        return {'title': place.title, 'description': place.description, 'price': place.price, 'latitude': place.latitude, 'longitude': place.longitude, 'owner_id': place.owner.id, 'amenities': place.amenities}, 200
 
     @api.expect(place_model)
     @api.response(200, 'Place updated successfully')
