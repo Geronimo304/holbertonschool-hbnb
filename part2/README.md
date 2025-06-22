@@ -3,7 +3,7 @@
 
 ## Project Description
 
-This is the second part of the HolbertonBnB project, a backend system inspired by AirBnB, developed as part of the Holberton School curriculum. The objective in this phase is to implement a RESTful API using Flask and Flask-RESTx, apply object-oriented principles, and structure the application using clean architecture and design patterns like Repository and Facade. The API allows managing users, places, amenities, and reviews in a modular, testable, and extensible way.
+This is the second part of the HolbertonBnB project, inspired by AirBnB, developed as part of the Holberton School curriculum. The objective in this phase is to implement a RESTful API using Flask and Flask-RESTx, apply object-oriented principles, and structure the application using clean architecture and design patterns like Repository and Facade. The API allows managing users, places, amenities, and reviews in a modular, testable, and extensible way.
 
 ## Repository Structure
 
