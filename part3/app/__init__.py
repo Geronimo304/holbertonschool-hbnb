@@ -8,12 +8,12 @@ from app.api.v1.reviews import api as review_ns
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 
-bcrypt = Bcrypt()
-db = SQLAlchemy()
+
 
 def create_app(config_class="config.DevelopmentConfig"):
     app = Flask(__name__)
-    db.init_app(app)
+    bcrypt = Bcrypt()
+    db = SQLAlchemy(app)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite3:///prueba.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config.from_object(config_class)
