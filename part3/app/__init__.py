@@ -5,6 +5,12 @@ from app.api.v1.users import api as users_ns
 from app.api.v1.ameninties import api as amenity_ns
 from app.api.v1.places import api as place_ns
 from app.api.v1.reviews import api as review_ns
+from flask_bcrypt import Bcrypt
+from flask_sqlalchemy import SQLAlchemy
+
+bcrypt = Bcrypt()
+
+db = SQLAlchemy()
 
 def create_app(config_class="config.DevelopmentConfig"):
     app = Flask(__name__)
@@ -15,5 +21,8 @@ def create_app(config_class="config.DevelopmentConfig"):
     api.add_namespace(amenity_ns, path='/api/v1/amenity')
     api.add_namespace(place_ns, path='/api/v1/places')
     api.add_namespace(review_ns, path='/api/v1/reviews')
+
+    bcrypt.init_app(app)
+    db.init_app(app)
 
     return app
