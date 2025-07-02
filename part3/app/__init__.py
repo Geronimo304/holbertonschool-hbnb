@@ -10,8 +10,6 @@ from flask_sqlalchemy import SQLAlchemy
 
 bcrypt = Bcrypt()
 
-db = SQLAlchemy()
-
 def create_app(config_class="config.DevelopmentConfig"):
     app = Flask(__name__)
     app.config.from_object(config_class)
@@ -23,6 +21,5 @@ def create_app(config_class="config.DevelopmentConfig"):
     api.add_namespace(review_ns, path='/api/v1/reviews')
 
     bcrypt.init_app(app)
-    db.init_app(app)
 
     return app

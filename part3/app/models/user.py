@@ -1,8 +1,11 @@
 from app.models.basemodel import BaseModel
 import uuid
 from flask_bcrypt import Bcrypt
+from app.db import db
 
 class User(BaseModel):
+    __tablename__ = "users"
+    
     def __init__(self, first_name, last_name, email, password, is_admin=False):
         super().__init__()
 
