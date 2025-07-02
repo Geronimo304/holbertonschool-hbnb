@@ -9,9 +9,13 @@ from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 
 bcrypt = Bcrypt()
+db = SQLAlchemy()
 
 def create_app(config_class="config.DevelopmentConfig"):
     app = Flask(__name__)
+    db.init_app(app)
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite3:///prueba.db'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config.from_object(config_class)
     api = Api(app, version='1.0', title='HBnB API', description='HBnB Application API')
 
@@ -21,5 +25,7 @@ def create_app(config_class="config.DevelopmentConfig"):
     api.add_namespace(review_ns, path='/api/v1/reviews')
 
     bcrypt.init_app(app)
+    with app.app_context():
+        app.create_all()
 
     return app
