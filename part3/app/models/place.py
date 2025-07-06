@@ -1,10 +1,32 @@
+from app import db
 from app.models.basemodel import BaseModel
 from app.models.user import User
 from app.models.review import Review
 from app.models.amenity import Amenity
 import uuid
 
+place_amenity = db.Table(
+    'place_amenity',
+    db.Column('place_id', db.String(36), db.ForeignKey('places.id'), primary_key=True),
+    db.Column('amenity_id', db.String(36), db.ForeignKey('amenities.id'), primary_key=True)
+)
+
 class Place(BaseModel):
+    __tablename__ = 'places'
+
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text)
+    price = db.Column(db.Float, nullable=False)
+    latitude = db.Column(db.Float, nullable=False)
+    longitude = db.Column(db.Float, nullable=False)
+
+    owner_id = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False)
+    owner = db.relationship('User', back_populates='places')
+
+    #Relaciones
+    amenities = db.relationship('Amenity', secondary=place_amenity, back_populates='places')
+    reviews = db.relationship('Review', back_populates='place', cascade='all, delete-orphan')
+
     def __init__(self, title, description, price, latitude, longitude, owner, amenities=None, reviews=None):
         super().__init__()
 

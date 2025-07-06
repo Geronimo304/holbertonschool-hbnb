@@ -1,7 +1,15 @@
+from app import db
 from app.models.basemodel import BaseModel
 import uuid
 
 class Amenity(BaseModel):
+    __tablename__ = 'amenities'
+
+    name = db.Column(db.String(50), nullable=False, unique=True)
+    
+    #Relaciones
+    places = db.relationship('Place', secondary='place_amenity', back_populates='amenities')
+    
     def __init__(self, name):
         super().__init__()
 
