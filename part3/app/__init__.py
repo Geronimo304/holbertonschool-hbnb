@@ -19,6 +19,7 @@ def create_app(config_class="config.DevelopmentConfig"):
 
     db.init_app(app)
     bcrypt.init_app(app)
+    jwt.init_app(app)
 
     # API setup
     api = Api(app, version='1.0', title='HBnB API', description='HBnB Application API')
