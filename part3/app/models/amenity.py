@@ -1,5 +1,6 @@
 from app import db
 from app.models.basemodel import BaseModel
+
 import uuid
 
 class Amenity(BaseModel):

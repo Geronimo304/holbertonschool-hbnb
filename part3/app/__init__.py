@@ -28,11 +28,13 @@ def create_app(config_class="config.DevelopmentConfig"):
     from app.api.v1.ameninties import api as amenity_ns
     from app.api.v1.places import api as place_ns
     from app.api.v1.reviews import api as review_ns
+    from app.api.v1.auth import api as auth_ns
 
     api.add_namespace(users_ns, path='/api/v1/users')
     api.add_namespace(amenity_ns, path='/api/v1/amenity')
     api.add_namespace(place_ns, path='/api/v1/places')
     api.add_namespace(review_ns, path='/api/v1/reviews')
+    api.add_namespace(auth_ns, path="/api/v1/auth")
 
     with app.app_context():
         db.create_all()
