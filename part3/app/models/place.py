@@ -5,12 +5,6 @@ from app.models.review import Review
 from app.models.amenity import Amenity
 import uuid
 
-place_amenity = db.Table(
-    'place_amenity',
-    db.Column('place_id', db.String(36), db.ForeignKey('places.id'), primary_key=True),
-    db.Column('amenity_id', db.String(36), db.ForeignKey('amenities.id'), primary_key=True)
-)
-
 class Place(BaseModel):
     __tablename__ = 'places'
 
@@ -22,6 +16,13 @@ class Place(BaseModel):
 
     owner_id = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False)
     owner = db.relationship('User', back_populates='places')
+
+    place_amenity = db.Table(
+        'place_amenity',
+        db.Column('place_id', db.String(36), db.ForeignKey('places.id'), primary_key=True),
+        db.Column('amenity_id', db.String(36), db.ForeignKey('amenities.id'), primary_key=True)
+    )
+
 
     #Relaciones
     amenities = db.relationship('Amenity', secondary=place_amenity, back_populates='places')

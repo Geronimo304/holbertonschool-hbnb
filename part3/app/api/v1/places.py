@@ -1,6 +1,7 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
 from flask import request
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 api = Namespace('places', description='Place operations')
 
@@ -30,50 +31,69 @@ place_model = api.model('Place', {
     'price': fields.Float(required=True, description='Price per night'),
     'latitude': fields.Float(required=True, description='Latitude of the place'),
     'longitude': fields.Float(required=True, description='Longitude of the place'),
-    'owner_id': fields.String(required=True, description='ID of the owner'),
     'amenities': fields.List(fields.String, required=True, description="List of amenities ID's"),
-    'reviews': fields.List(fields.Nested(review_model), description='List of reviews')
-})
+    })
 
 @api.route('/')
 class PlaceList(Resource):
-    #@jwt_required()
+    @jwt_required()
     @api.expect(place_model)
     @api.response(201, 'Place successfully created')
     @api.response(400, 'Invalid input data')
     def post(self):
         """Register a new place"""
-        data = api.payload
-        existing_place = facade.get_place(data['title'])
-        if existing_place:
-            return {'error': 'Place already exists'}, 400
-        
-        owner_id = data.get('owner_id')
-        if not owner_id: 
-            return {'error': 'Owner ID is required'}, 400
+        current_user = get_jwt_identity()
+        owner_id = current_user["id"]
         owner = facade.get_user(owner_id)
+        data = api.payload
+        print(data)
+        existing_place = facade.get_place(data['title'])
+
         if not owner:
             return {'error': 'Owner not found'}, 404
-        
-        data.pop('owner_id', None) 
-        data['owner'] = owner
 
-        n_place = facade.create_place(data)
-        return {
-            'place_id': n_place.id,
-            'title': n_place.title,
-            'description': n_place.description,
-            'price': n_place.price,
-            'latitude': n_place.latitude,
-            'longitude': n_place.longitude,
-            'owner': {
-                'id': owner.id,
-                'first_name': owner.first_name,
-                'last_name': owner.last_name,
-                'email': owner.email
-            },
-            'amenities': n_place.amenities
-        }, 201
+        if not owner_id:
+            return {'error': 'Unauthorized'}, 401
+
+        if existing_place:
+            return {'error': 'Place already exists'}, 400
+
+        amenity_ids = data.get('amenities', [])
+        amenities = []
+        for amenity_id in amenity_ids:
+            amenity = facade.get_amenity(amenity_id)
+            if amenity:
+                amenities.append(amenity)
+
+        try:
+            place = facade.create_place({
+                'title': data['title'],
+                'description': data.get('description'),
+                'price': data['price'],
+                'latitude': data['latitude'],
+                'longitude': data['longitude'],
+                'owner': owner,
+                'amenities': amenities,
+                'reviews': []
+            })
+
+            return {
+                'place_id': place.id,
+                'title': place.title,
+                'description': place.description,
+                'price': place.price,
+                'latitude': place.latitude,
+                'longitude': place.longitude,
+                'owner': {
+                    'id': owner.id,
+                    'first_name': owner.first_name,
+                    'last_name': owner.last_name,
+                    'email': owner.email
+                },
+                'amenities': [a.to_dict() for a in place.amenities]
+            }, 201
+        except ValueError as e:
+            return {'error': str(e)}, 400
 
     @api.response(200, 'List of places retrieved successfully')
     def get(self):
@@ -95,25 +115,28 @@ class PlaceResource(Resource):
     @api.expect(place_model)
     @api.response(200, 'Place updated successfully')
     @api.response(404, 'Place not found')
-    @api.response(400, 'Invalid input data')
+    @api.response(400, 'Invalid input data')    
+    @jwt_required()
     def put(self, place_id):
-        """Update a place's information"""
+        current_user = get_jwt_identity()
         place = facade.get_place(place_id)
-        if not place:
-            return {'error': 'Place not found'}, 404
+        if not place: #corrobora que el lugar existe
+            return {'error': 'place not found'}, 404
+        elif place.owner_id != current_user: #corrobora que el usuario actual es el propietario del lugar
+            return {'error': 'Unauthorized action'}, 403
+        else: # si el lugar existe y el usuario es el propietario, procede a actualizar
+            place_data = api.payload
+            try:
+                updated_place = facade.update_place(place_id, place_data)
+                return {'message': 'place updated successfully', 'place': {
+                    'id': updated_place.id,
+                    'title': updated_place.title,
+                    'description': updated_place.description,
+                    'price': updated_place.price,
+                    'latitude': updated_place.latitude,
+                    'longitude': updated_place.longitude,
+                    'amenities': updated_place.amenities
+                }}, 200
 
-        place_data = api.payload
-        try:
-            updated_place = facade.update_place(place_id, place_data)
-            return {'message': 'place updated successfully', 'place': {
-                'id': updated_place.id,
-                'title': updated_place.title,
-                'description': updated_place.description,
-                'price': updated_place.price,
-                'latitude': updated_place.latitude,
-                'longitude': updated_place.longitude,
-                'amenities': updated_place.amenities
-            }}, 200
-
-        except ValueError as e:
-            return {'error': str(e)}, 400
+            except ValueError as e:
+                return {'error': str(e)}, 400
