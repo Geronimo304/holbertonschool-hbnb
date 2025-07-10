@@ -122,7 +122,7 @@ class PlaceResource(Resource):
         place = facade.get_place(place_id)
         if not place: #corrobora que el lugar existe
             return {'error': 'place not found'}, 404
-        elif place.owner_id != current_user: #corrobora que el usuario actual es el propietario del lugar
+        elif place.owner_id != current_user["id"]: #corrobora que el usuario actual es el propietario del lugar
             return {'error': 'Unauthorized action'}, 403
         else: # si el lugar existe y el usuario es el propietario, procede a actualizar
             place_data = api.payload
