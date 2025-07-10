@@ -96,9 +96,14 @@ class ReviewResource(Resource):
     @jwt_required()
     def put(self, review_id):
         """Update a review's information"""
+        current_user = get_jwt_identity()
         review = facade.get_review(review_id)
+
         if not review:
             return {'error': 'review not found'}, 404
+
+        elif review.user_id != current_user["id"]: #corrobora que el usuario actual es el propietario del lugar
+            return {'error': 'Unauthorized action'}, 403
 
         review_data = api.payload
         try:
