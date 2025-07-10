@@ -8,7 +8,6 @@ api = Namespace('reviews', description='Review operations')
 review_model = api.model('Review', {
     'text': fields.String(required=True, description='Text of the review'),
     'rating': fields.Integer(required=True, description='Rating of the place (1-5)'),
-    'user_id': fields.String(required=True, description='ID of the user'),
     'place_id': fields.String(required=True, description='ID of the place')
 })
 
@@ -22,16 +21,10 @@ class ReviewList(Resource):
         """Register a new review"""
         current_user = get_jwt_identity()
         user_id = current_user["id"]
+        user = facade.get_user(user_id)
         data = api.payload
 
-        if not user_id:
-            return {'error': 'Unauthorized'}, 401
-
-        if not user_id: 
-            return {'error': 'User ID is required'}, 400
-
-        user = facade.get_user(user_id)
-        if not user:
+        if not current_user:
             return {'error': 'User not found'}, 404
 
         data.pop('user_id', None)
@@ -102,7 +95,7 @@ class ReviewResource(Resource):
         if not review:
             return {'error': 'review not found'}, 404
 
-        elif review.user_id != current_user["id"]: #corrobora que el usuario actual es el propietario del lugar
+        if review.user_id != current_user["id"]:
             return {'error': 'Unauthorized action'}, 403
 
         review_data = api.payload
@@ -123,9 +116,20 @@ class ReviewResource(Resource):
     @jwt_required()
     def delete(self, review_id):
         """Delete a review"""
-        if facade.delete_review(review_id):
+        current_user = get_jwt_identity()
+        current_user_id = current_user["id"]
+        review = facade.get_review(review_id)
+
+        if not review:
+            return {'error': 'Review not found'}, 404
+        user_id = review.user_id
+
+        if current_user_id != user_id:
+            return {"error": "Unauthorized"}, 403
+
+        else:
+            facade.delete_review(review_id)
             return {'message': 'Review deleted successfully'}, 200
-        return {'error': 'Review not found'}, 404
 
 @api.route('/places/<place_id>/reviews')
 class PlaceReviewList(Resource):

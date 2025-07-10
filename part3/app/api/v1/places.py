@@ -46,7 +46,6 @@ class PlaceList(Resource):
         owner_id = current_user["id"]
         owner = facade.get_user(owner_id)
         data = api.payload
-        print(data)
         existing_place = facade.get_place(data['title'])
 
         if not owner:
