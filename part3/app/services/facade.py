@@ -6,7 +6,8 @@ from app.models.review import Review
 class HBnBFacade:
     def __init__(self):
         from app.persistence.repository import SQLAlchemyRepository
-        self.user_repo = SQLAlchemyRepository(User)
+        from app.services.repositories.user_repository import UserRepository
+        self.user_repo = UserRepository()
         self.amenity_repo = SQLAlchemyRepository(Amenity)
         self.place_repo = SQLAlchemyRepository(Place)
         self.review_repo = SQLAlchemyRepository(Review)
