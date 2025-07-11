@@ -70,6 +70,9 @@ class UserResource(Resource):
         current_user_id = current_user["id"]
         user = facade.get_user(user_id)
 
+        if not current_user.get('is_admin'):
+            return {'error': 'Admin privileges required'}, 403
+
         if not user:
             return {'error': 'User not found'}, 404
 
