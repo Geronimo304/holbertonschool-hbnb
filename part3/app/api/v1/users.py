@@ -1,6 +1,6 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 
 api = Namespace('users', description='User operations')
 
@@ -18,9 +18,14 @@ class UserList(Resource):
     @api.response(201, 'User successfully created')
     @api.response(400, 'Email already registered')
     @api.response(400, 'Invalid input data')
+    @jwt_required()
     def post(self):
         """Register a new user"""
+        current_user = get_jwt_identity()
         user_data = api.payload
+
+        if not current_user.get('is_admin'):
+            return {'error': 'Admin privileges required'}, 403
 
         if 'password' not in user_data or not user_data['password']:
             return {'error': 'Password is required'}, 400
@@ -30,7 +35,7 @@ class UserList(Resource):
             return {'error': 'Email already registered'}, 400
         try:
             new_user = facade.create_user(user_data)
-            return {'id': new_user.id, 'Message': 'User registered successfully'}, 201
+            return {'id': new_user.id, 'message': 'User registered successfully'}, 201
         except ValueError as e:
             return {'error': 'Invalid input data', 'message': str(e)}, 400
 
@@ -68,7 +73,7 @@ class UserResource(Resource):
         if not user:
             return {'error': 'User not found'}, 404
 
-        if user_id != current_user_id:
+        elif user_id != current_user_id:
             return {'error': 'Unauthorized action'}
 
         user_data = api.payload
