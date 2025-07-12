@@ -2,16 +2,21 @@ from app import db
 from app.models.basemodel import BaseModel
 from app.models.user import User
 import uuid
+from sqlalchemy import UniqueConstraint
 
 class Review(BaseModel):
     __tablename__ = 'reviews'
 
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-    text = db.Column(db.String(100), nullable=False)
+    text = db.Column(db.Text, nullable=False)
     rating = db.Column(db.Integer, nullable=False)
     
     place_id = db.Column(db.String(36), db.ForeignKey('places.id'), nullable=False)
     user_id = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False)
+
+    __table_args__ = (
+        UniqueConstraint('user_id', 'place_id', name='uq_user_place_review'),
+    )
 
     # Relaciones
     place = db.relationship('Place', back_populates='reviews')

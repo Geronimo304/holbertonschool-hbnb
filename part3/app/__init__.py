@@ -9,26 +9,36 @@ bcrypt = Bcrypt()
 jwt = JWTManager()
 
 from app.models.user import User  # asegúrate de que el path sea correcto
+from app.models.amenity import Amenity
 
 def create_admin_user():
-    admin_email = "admin@example.com"
-    admin_password = "admin123"
+    admin_id = "36c9050e-ddd3-4c3b-9731-9f487208bbc1"
+    admin_email = "admin@hbnb.io"
+    admin_password = "admin1234"
 
     existing_admin = User.query.filter_by(email=admin_email).first()
     if not existing_admin:
         admin = User(
+            id=admin_id,
             first_name="Admin",
-            last_name="User",
+            last_name="HBnB",
             email=admin_email,
             password=admin_password,
             is_admin=True
         )
         admin.hash_password(admin_password)
         db.session.add(admin)
-        db.session.commit()
         print("Usuario admin creado.")
     else:
         print("Usuario admin ya existe.")
+
+
+    amenity_names = ["WiFi", "Swimming Pool", "Air Conditioning"]
+    for name in amenity_names:
+        existing_amenity = Amenity.query.filter_by(name=name).first()
+        if not existing_amenity:
+            amenity = Amenity(name=name)
+            db.session.add(amenity)
 
 def create_app(config_class="config.DevelopmentConfig"):
     app = Flask(__name__)

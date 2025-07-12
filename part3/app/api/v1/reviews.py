@@ -1,6 +1,7 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from app.models.review import Review
 
 api = Namespace('reviews', description='Review operations')
 
@@ -41,6 +42,9 @@ class ReviewList(Resource):
         data.pop('place_id', None) 
         data['place'] = place
 
+        existing_review = Review.query.filter_by(user_id=user.id, place_id=place.id).first()
+        if existing_review:
+            return {'error': 'User has already reviewed this place.'}, 400
         try:
             new_review = facade.create_review(data)
             return {
