@@ -17,8 +17,10 @@ class User(BaseModel):
     places = db.relationship('Place', back_populates='owner', cascade='all, delete-orphan')
     reviews = db.relationship('Review', back_populates='user', cascade='all, delete-orphan')
     
-    def __init__(self, first_name, last_name, email, password, is_admin=False):
+    def __init__(self, id, first_name, last_name, email, password, is_admin=False):
         super().__init__()
+        if id:
+            self.id = id
 
         if not first_name or len(first_name) > 50:
             raise ValueError("El nombre es obligatorio y debe tener 50 caracteres máximo")
