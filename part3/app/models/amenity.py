@@ -6,6 +6,7 @@ import uuid
 class Amenity(BaseModel):
     __tablename__ = 'amenities'
 
+    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     name = db.Column(db.String(50), nullable=False, unique=True)
     
     #Relaciones
