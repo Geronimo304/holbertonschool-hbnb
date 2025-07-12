@@ -8,6 +8,28 @@ db = SQLAlchemy()
 bcrypt = Bcrypt()
 jwt = JWTManager()
 
+from app.models.user import User  # asegúrate de que el path sea correcto
+
+def create_admin_user():
+    admin_email = "admin@example.com"
+    admin_password = "admin123"
+
+    existing_admin = User.query.filter_by(email=admin_email).first()
+    if not existing_admin:
+        admin = User(
+            first_name="Admin",
+            last_name="User",
+            email=admin_email,
+            password=admin_password,
+            is_admin=True
+        )
+        admin.hash_password(admin_password)
+        db.session.add(admin)
+        db.session.commit()
+        print("Usuario admin creado.")
+    else:
+        print("Usuario admin ya existe.")
+
 def create_app(config_class="config.DevelopmentConfig"):
     app = Flask(__name__)
 
@@ -39,5 +61,7 @@ def create_app(config_class="config.DevelopmentConfig"):
 
     with app.app_context():
         db.create_all()
+        create_admin_user()
+
     jwt.init_app(app)
     return app
