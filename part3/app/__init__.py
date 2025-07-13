@@ -28,6 +28,7 @@ def create_admin_user():
         )
         admin.hash_password(admin_password)
         db.session.add(admin)
+        db.session.commit()
         print("Usuario admin creado.")
     else:
         print("Usuario admin ya existe.")
@@ -39,6 +40,7 @@ def create_admin_user():
         if not existing_amenity:
             amenity = Amenity(name=name)
             db.session.add(amenity)
+            db.session.commit()
 
 def create_app(config_class="config.DevelopmentConfig"):
     app = Flask(__name__)
