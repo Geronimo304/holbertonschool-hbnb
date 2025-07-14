@@ -1,149 +1,170 @@
-# HolbertonBnB - Part 2
+# HolbertonBnB – Part 3
 
-This project is the continuation of **HolbertonBnB**, an application inspired by platforms like AirBnB. Developed as part of the **Holberton School** curriculum, the goal of this second part is to build a **RESTful API** using **Flask** and **Flask-RESTx**, applying design principles such as:
+By Geronimo Negreira, Agustín Lahalo & Bruno Dos Santos – Cohort 26
 
-- Layered architecture
-- Object-oriented programming
-- SOLID principles
-- Patterns like **Repository** and **Facade**
+---
 
-The API allows management of the following resources: **users**, **places**, **amenities**, and **reviews**. The system is designed to be modular, testable, and scalable.
+## Introduction
+
+In Part 3 we extend our HBnB RESTful API by adding:
+
+- Persistent storage with SQLAlchemy (SQLite by default).
+- Password hashing with Flask-Bcrypt.
+- JWT authentication with Flask-JWT-Extended.
+- Role-based access control (admin vs. regular users).
+- Database seeding to create a default admin user and a set of amenities at startup.
 
 ---
 
 ## Project Structure
 
 ```
-parte2/
+part3/
 ├── app/
-│   ├── api/v1/              # REST endpoints organized by resource
-│   ├── models/              # Entities and validations
-│   ├── persistence/         # In-memory storage (repositories)
-│   ├── services/            # Business logic (facades)
-├── config.py                # Global configuration
-├── run.py                   # Application entry point
-├── requirements.txt         # Project dependencies
+│   ├── api/v1/                 
+│   │   ├── auth.py             
+│   │   ├── users.py            
+│   │   ├── amenity.py          
+│   │   ├── places.py           
+│   │   └── reviews.py          
+│   ├── models/                 
+│   ├── persistence/            
+│   ├── services/               
+│   ├── __init__.py             
+│   └── config.py               
+├── tests/                      
+├── requirements.txt            
+├── run.py                      
+└── .gitignore                  
 ```
 
 ---
 
-## Requirements and Installation
+## Prerequisites
 
-### Prerequisites
+- Python 3.7 or newer  
+- pip  
+- Optionally, virtualenv  
 
-- Python 3.x  
-- `pip`  
-- `virtualenv` (optional but recommended)
+---
 
-### Installation
+## Installation
 
-```bash
-git clone <repo-url>
-cd parte2
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-```
+1. Clone the repository and go into the `part3` directory:
+   ```bash
+   git clone <repo-url>
+   cd part3
+   ```
+2. (Optional) Create and activate a virtual environment:
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-### Running the app
+---
+
+## Configuration
+
+- Edit `config.py` or set the environment variables `SECRET_KEY` and `JWT_SECRET_KEY` as needed.  
+- By default, the app uses SQLite (`sqlite:///database.db`) in development mode.
+
+---
+
+## Database and Seeding
+
+When the app starts (`run.py`), it will:
+
+1. Create database tables using SQLAlchemy.  
+2. Ensure there is an admin user (email `admin@hbnb.io`, password `admin1234`).  
+3. Insert default amenities: `WiFi`, `Swimming Pool`, `Air Conditioning`.
+
+You can customize these values in the `create_admin_user()` function in `app/__init__.py`.
+
+---
+
+## Running the Application
 
 ```bash
 python3 run.py
 ```
 
-The API will be available at: [http://127.0.0.1:5000/](http://127.0.0.1:5000/)
+The API will be available at:  
+```
+http://127.0.0.1:5000/
+```
 
 ---
 
-## System Architecture
+## Authentication
 
-The system follows a layered architecture:
+1. **Obtain a token**  
+   ```http
+   POST /api/v1/auth/login
+   Content-Type: application/json
 
-- **Presentation (API)**: Handles HTTP requests/responses and errors.
-- **Business Logic (Facade)**: Applies rules and coordinates entities.
-- **Persistence (Repository)**: Manages storage (in-memory).
+   {
+     "email": "bruno@email.com",
+     "password": "pepe"
+   }
+   ```
+   **Response:**  
+   ```json
+   {
+     "access_token": "<JWT_TOKEN>"
+   }
+   ```
 
-> The **Facade** pattern is used to decouple the API from internal logic, exposing a clear interface.
-
----
-
-## Main Entities
-
-- **User**: A registered user of the platform.
-- **Place**: A property listed by a user.
-- **Amenity**: Optional services for a place (WiFi, pool, etc.).
-- **Review**: Comment and rating for a place.
-- **BaseModel**: Abstract class with common attributes (`id`, `created_at`, `updated_at`).
-
----
-
-## Validations
-
-- Email must contain `@` and `.`.
-- First and last names: max 50 characters.
-- Price must be a positive number.
-- Valid geographical coordinates.
-- Review score: between 1 and 5 stars.
+2. **Use the token** in protected endpoints:
+   ```
+   Authorization: Bearer <JWT_TOKEN>
+   ```
 
 ---
 
 ## Available Endpoints
 
-| Method | Route                                      | Description                            |
-|--------|--------------------------------------------|----------------------------------------|
-| POST   | `/api/v1/users/`                           | Create a new user                      |
-| GET    | `/api/v1/users/<user_id>`                  | Retrieve user info                     |
-| PUT    | `/api/v1/users/<user_id>`                  | Update user info                       |
-| POST   | `/api/v1/places/`                          | Create a new place                     |
-| GET    | `/api/v1/places/`                          | List all places                        |
-| GET    | `/api/v1/places/<place_id>`                | Retrieve place info                    |
-| PUT    | `/api/v1/places/<place_id>`                | Update a place                         |
-| POST   | `/api/v1/amenities/`                       | Create a new amenity                   |
-| GET    | `/api/v1/amenities/`                       | List all amenities                     |
-| GET    | `/api/v1/amenities/<amenity_id>`           | Retrieve amenity info                  |
-| PUT    | `/api/v1/amenities/<amenity_id>`           | Update an amenity                      |
-| POST   | `/api/v1/reviews/`                         | Create a review                        |
-| GET    | `/api/v1/reviews/`                         | List all reviews                       |
-| GET    | `/api/v1/reviews/<review_id>`              | Retrieve a review                      |
-| PUT    | `/api/v1/reviews/<review_id>`              | Update a review                        |
-| DELETE | `/api/v1/reviews/<review_id>`              | Delete a review                        |
-| GET    | `/api/v1/places/<place_id>/reviews`        | List reviews for a specific place      |
+| Method | Route                                   | Description                                          | Authentication                      |
+|--------|-----------------------------------------|------------------------------------------------------|-------------------------------------|
+| POST   | `/api/v1/auth/login`                    | Generate a new JWT token                             | None                                |
+| GET    | `/api/v1/users/`                        | List all users                                       | Optional (admin privileges for some)|
+| POST   | `/api/v1/users/`                        | Create a new user                                    | Admin only                          |
+| GET    | `/api/v1/users/<user_id>`               | Retrieve user details                                | Public                              |
+| PUT    | `/api/v1/users/<user_id>`               | Update user information                              | Admin or the user themself          |
+| GET    | `/api/v1/amenity/`                      | List all amenities                                   | Public                              |
+| POST   | `/api/v1/amenity/`                      | Create a new amenity                                 | Admin only                          |
+| GET    | `/api/v1/amenity/<amenity_id>`          | Retrieve amenity details                             | Public                              |
+| PUT    | `/api/v1/amenity/<amenity_id>`          | Update an amenity                                    | Admin only                          |
+| GET    | `/api/v1/places/`                       | List all places                                      | Public                              |
+| POST   | `/api/v1/places/`                       | Create a new place (owner is the JWT user)           | JWT required                        |
+| GET    | `/api/v1/places/<place_id>`             | Retrieve place details                               | Public                              |
+| PUT    | `/api/v1/places/<place_id>`             | Update a place (only the owner)                      | JWT required                        |
+| GET    | `/api/v1/reviews/`                      | List all reviews                                     | Public                              |
+| POST   | `/api/v1/reviews/`                      | Create a review (one per user per place)             | JWT required                        |
+| GET    | `/api/v1/reviews/<review_id>`           | Retrieve review details                              | Public                              |
+| PUT    | `/api/v1/reviews/<review_id>`           | Update a review (only the author)                    | JWT required                        |
+| DELETE | `/api/v1/reviews/<review_id>`           | Delete a review (only the author)                    | JWT required                        |
+| GET    | `/api/v1/places/<place_id>/reviews`     | List reviews for a specific place                    | Public                              |
 
 ---
 
-## Data Flow - Examples
+## Running Tests
 
-### Register a User
-
-1. Client sends `POST /api/v1/users/` with JSON data.
-2. Data is validated.
-3. `facade.create_user()` is called.
-4. A `User` object is instantiated and saved.
-5. A JSON response is returned.
-
-### Create a Review
-
-1. Client sends `POST /api/v1/reviews/`.
-2. `user_id` and `place_id` are validated.
-3. The review is stored and linked to the place.
-4. A response with the review data is returned.
-
----
-
-## Testing
-
-To run automated tests:
+From the `part3` directory, run:
 
 ```bash
-python3 -m unittest discover tests/
+python3 -m unittest discover tests -v
 ```
 
-Each test file covers both valid and invalid scenarios for the API endpoints.
+All tests for users, amenities, places, and reviews should pass successfully.
 
 ---
 
 ## Authors
 
-- Geronimo Negreira
-- Agustin Lahalo 
-- Bruno Dos Santos
+- Geronimo Negreira  
+- Agustín Lahalo  
+- Bruno Dos Santos  
