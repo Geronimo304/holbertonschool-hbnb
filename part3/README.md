@@ -52,7 +52,7 @@ part3/
 
 1. Clone the repository and go into the `part3` directory:
    ```bash
-   git clone <repo-url>
+   git clone  https://github.com/Geronimo304/holbertonschool-hbnb.git
    cd part3
    ```
 2. (Optional) Create and activate a virtual environment:
@@ -148,18 +148,6 @@ http://127.0.0.1:5000/
 | PUT    | `/api/v1/reviews/<review_id>`           | Update a review (only the author)                    | JWT required                        |
 | DELETE | `/api/v1/reviews/<review_id>`           | Delete a review (only the author)                    | JWT required                        |
 | GET    | `/api/v1/places/<place_id>/reviews`     | List reviews for a specific place                    | Public                              |
-
----
-
-## Running Tests
-
-From the `part3` directory, run:
-
-```bash
-python3 -m unittest discover tests -v
-```
-
-All tests for users, amenities, places, and reviews should pass successfully.
 
 ---
 
