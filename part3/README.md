@@ -107,8 +107,8 @@ http://127.0.0.1:5000/
    Content-Type: application/json
 
    {
-     "email": "bruno@email.com",
-     "password": "pepe"
+     "email": "admin@hbnb.io",
+     "password": "admin1234"
    }
    ```
    **Response:**  
