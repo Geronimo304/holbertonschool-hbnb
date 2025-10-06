@@ -138,11 +138,9 @@ Este flujo genérico, que culmina en el código **HTTP 201 (Created)**, ilustra 
 
 Este flujo ilustra una operación de lectura, donde la **Business Logic** orquesta la consulta a la base de datos y crea la lista de objetos para retornar.
 
-![Fetching List of Places](WhatsApp%20Image%202025-10-02%20at%2010.51.33%20AM.jpeg)
-
 | Diagrama | Propósito | Código de Éxito | Código de Error |
 |-----------|------------|----------------|----------------|
-| WhatsApp Image 2025-10-02 at 10.51.33 AM.jpeg | Fetching List of Places | 201 (Return List of Places) | 404 (No place found) |
+| ![Fetching List of Places](WhatsApp%20Image%202025-10-02%20at%2010.51.33%20AM.jpeg) | Fetching List of Places | 201 (Return List of Places) | 404 (No place found) |
 
 ---
 
