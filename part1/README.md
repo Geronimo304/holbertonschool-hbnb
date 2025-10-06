@@ -25,7 +25,7 @@ Racional del Diseño: Esta separación es crucial. Permite que cada capa se desa
 Esta capa define las entidades de nuestro sistema y sus relaciones.
 
 Diagrama de Clases Detallado
-WhatsApp Image 2025-10-03 at 3.27.22 PM.jpeg
+![WhatsApp Image 2025-10-03 at 3.27.22 PM.jpeg]
 
 Explicación del Modelo de Datos
 El diagrama de clases muestra las principales entidades (Modelos) que definen el proyecto y sus relaciones, todas heredando de una clase Base (que en el contexto de las indicaciones podría llamarse BaseModel) para garantizar atributos comunes:
