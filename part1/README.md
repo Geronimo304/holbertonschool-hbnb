@@ -6,8 +6,6 @@ Este documento sirve como el plan detallado y la referencia técnica para el des
 Esta sección presenta la vista general de la aplicación, mostrando cómo se organizan los principales componentes.
 
 Diagrama de Paquetes de Alto Nivel
-WhatsApp Image 2025-10-02 at 10.51.18 AM.jpeg
-
 Explicación de la Arquitectura
 El proyecto HBnB sigue una Arquitectura de Capas (Layered Architecture) para separar responsabilidades, lo que hace que el código sea más manejable y escalable.
 
@@ -25,8 +23,6 @@ Racional del Diseño: Esta separación es crucial. Permite que cada capa se desa
 Esta capa define las entidades de nuestro sistema y sus relaciones.
 
 Diagrama de Clases Detallado
-![WhatsApp Image 2025-10-03 at 3.27.22 PM.jpeg]([WhatsApp Image 2025-10-03 at 3.27.22 PM.jpeg)
-
 Explicación del Modelo de Datos
 El diagrama de clases muestra las principales entidades (Modelos) que definen el proyecto y sus relaciones, todas heredando de una clase Base (que en el contexto de las indicaciones podría llamarse BaseModel) para garantizar atributos comunes:
 
@@ -34,7 +30,7 @@ BaseModel (Base en el diagrama): Clase base que provee atributos esenciales como
 
 User: Representa a un usuario o anfitrión. Se relaciona con Place y con Review.
 
-Place: El alojamiento en sí. Es la entidad central. Se relaciona con un User (el anfitrión), y múltiples Amenity y Review.
+Place: El alojamiento en sí. Es la entidad central. Es poseído por un User, recibe cero o muchas Review y tiene cero o muchas Amenity.
 
 Review: Una reseña de un usuario sobre un Place.
 
@@ -46,11 +42,9 @@ Decisiones de Diseño: Al centralizar la lógica en esta capa, garantizamos que 
 Esta sección ilustra cómo fluyen las peticiones de datos entre los diferentes componentes del sistema al interactuar con la API.
 
 Diagramas de Secuencia para Llamadas API
-Para cumplir con las indicaciones, incluimos los diagramas de secuencia de las llamadas a la API:
+Creación de un Objeto (Place):
 
-Creación de un Objeto (Place): WhatsApp Image 2025-10-02 at 10.51.34 AM.jpeg
-
-Consulta de Objetos (List of Places): WhatsApp Image 2025-10-02 at 10.51.33 AM.jpeg
+Consulta de Objetos (List of Places):
 
 Flujo de Datos Típico (Ej. Crear un nuevo Place)
 El diagrama de secuencia detalla el flujo de una petición API para crear una nueva instancia (Place).
