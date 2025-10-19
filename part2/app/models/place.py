@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime
-from user import User  # con mayúscula, si la clase se llama User
+from user import User
 
 
 class Place:
