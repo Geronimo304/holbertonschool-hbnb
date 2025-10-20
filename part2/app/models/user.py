@@ -29,6 +29,10 @@ class User(BaseModel):
                 setattr(self, key, value)
         self.updated_at = datetime.utcnow()
         self.validate()
-
+    
+    def add_place(self, place):
+        if place not in self.places:
+            self.places.append(place)
     def __repr__(self):
+
         return f"<User {self.first_name} {self.last_name} ({self.email})>"

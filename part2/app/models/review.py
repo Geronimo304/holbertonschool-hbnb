@@ -12,6 +12,7 @@ class Review(BaseModel):
         self.rating = self._validate_rating(rating)
         self.user = self._validate_user(user)
         self.place = self._validate_place(place)
+        place.add_review(self)
 
     def _validate_comment(self, comment):
         if not comment:
