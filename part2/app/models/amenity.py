@@ -1,16 +1,13 @@
-import uuid
-from datetime import datetime
+from models.base_model import BaseModel
 
-
-class Amenity:
+class Amenity(BaseModel):
     """Amenity entity class."""
 
+
     def __init__(self, name: str, description: str = ""):
-        self.id = str(uuid.uuid4())
+        super().__init__()  # Hereda id, created_at, updated_at
         self.name = self._validate_name(name)
         self.description = description
-        self.created_at = datetime.utcnow()
-        self.updated_at = datetime.utcnow()
 
     def _validate_name(self, name):
         if not name or len(name) > 50:
@@ -21,7 +18,7 @@ class Amenity:
         for key, value in kwargs.items():
             if hasattr(self, key) and key != "id":
                 setattr(self, key, value)
-        self.updated_at = datetime.utcnow()
+        self.save()  # Actualiza updated_at
 
     def __repr__(self):
         return f"<Amenity {self.name}>"

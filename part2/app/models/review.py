@@ -1,20 +1,17 @@
-import uuid
-from datetime import datetime
+from models.base_model import BaseModel
 from user import User
 from place import Place
 
-
-class Review:
+class Review(BaseModel):
     """Review entity class."""
 
+
     def __init__(self, comment: str, rating: int, user: User, place: Place):
-        self.id = str(uuid.uuid4())
+        super().__init__()
         self.comment = self._validate_comment(comment)
         self.rating = self._validate_rating(rating)
         self.user = self._validate_user(user)
         self.place = self._validate_place(place)
-        self.created_at = datetime.utcnow()
-        self.updated_at = datetime.utcnow()
 
     def _validate_comment(self, comment):
         if not comment:
@@ -40,7 +37,7 @@ class Review:
         for key, value in kwargs.items():
             if hasattr(self, key) and key not in ["id", "user", "place"]:
                 setattr(self, key, value)
-        self.updated_at = datetime.utcnow()
+        self.save()
 
     def __repr__(self):
         return f"<Review {self.rating}/5 by {self.user.first_name} for {self.place.title}>"
