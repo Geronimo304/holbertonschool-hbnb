@@ -4,10 +4,9 @@ class Amenity(BaseModel):
     """Amenity entity class."""
 
 
-    def __init__(self, name: str, description: str = ""):
+    def __init__(self, name: str):
         super().__init__()  # Hereda id, created_at, updated_at
         self.name = self._validate_name(name)
-        self.description = description
 
     def _validate_name(self, name):
         if not name or len(name) > 50:

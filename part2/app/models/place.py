@@ -57,9 +57,9 @@ class Place(BaseModel):
                 setattr(self, key, value)
         self.save()
 
-     def add_amenity(self, amenity):
-        if amenity not in self.amenities:
-            self.amenities.append(amenity)
+    def add_amenity(self, amenity):
+        #if amenity not in self.amenities:
+        #    self.amenities.append(amenity)
     
     def add_review(self, review):
         if review not in self.reviews:

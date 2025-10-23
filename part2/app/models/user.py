@@ -13,6 +13,7 @@ class User(BaseModel):
         self.last_name = last_name
         self.email = email
         self.is_admin = is_admin
+        self.places = []
         self.validate()
 
     def validate(self):
@@ -31,8 +32,8 @@ class User(BaseModel):
         self.validate()
     
     def add_place(self, place):
-        if place not in self.places:
-            self.places.append(place)
+        #if place not in self.places:
+        #    self.places.append(place)
     def __repr__(self):
 
         return f"<User {self.first_name} {self.last_name} ({self.email})>"

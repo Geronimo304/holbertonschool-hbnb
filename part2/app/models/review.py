@@ -6,18 +6,18 @@ class Review(BaseModel):
     """Review entity class."""
 
 
-    def __init__(self, comment: str, rating: int, user: User, place: Place):
+    def __init__(self, text: str, rating: int, user: User, place: Place):
         super().__init__()
-        self.comment = self._validate_comment(comment)
+        self.text = self._validate_comment(text)
         self.rating = self._validate_rating(rating)
         self.user = self._validate_user(user)
         self.place = self._validate_place(place)
         place.add_review(self)
 
-    def _validate_comment(self, comment):
-        if not comment:
-            raise ValueError("Comment cannot be empty.")
-        return comment
+    def _validate_text(self, text):
+        if not text:
+            raise ValueError("Text cannot be empty.")
+        return text
 
     def _validate_rating(self, rating):
         if not 1 <= rating <= 5:
