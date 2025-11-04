@@ -8,28 +8,48 @@ class Review(BaseModel):
 
     def __init__(self, text: str, rating: int, user: User, place: Place):
         super().__init__()
-        self.text = self._validate_comment(text)
-        self.rating = self._validate_rating(rating)
-        self.user = self._validate_user(user)
-        self.place = self._validate_place(place)
+        self.text = self.text
+        self.rating = self.rating
+        self.user = self.user
+        self.place = self.place
         place.add_review(self)
 
-    def _validate_text(self, text):
+    @property
+    def text(self):
+        return self._text
+
+    @text.setter
+    def text(self, text):
         if not text:
             raise ValueError("Text cannot be empty.")
         return text
+        
+    @property
+    def rating(self):
+        return slef._rating
 
-    def _validate_rating(self, rating):
+    @rating.setter
+    def rating(self, rating):
         if not 1 <= rating <= 5:
             raise ValueError("Rating must be between 1 and 5.")
         return rating
+    
+    @property
+    def user(self): 
+        return self._user
 
-    def _validate_user(self, user):
+    @user.setter
+    def user(self, user):
         if not isinstance(user, User):
             raise TypeError("User must be a User instance.")
         return user
 
-    def _validate_place(self, place):
+    @property
+    def place(self):
+        return self._place
+
+    @place.setter
+    def place(self, place):
         if not isinstance(place, Place):
             raise TypeError("Place must be a Place instance.")
         return place
