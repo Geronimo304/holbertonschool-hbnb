@@ -1,7 +1,7 @@
 from datetime import datetime
-from models.base_model import BaseModel
+from app.models.base_model import BaseModel
 import uuid
-from models.place import Place 
+from app.models.place import Place 
 
 
 class User(BaseModel):

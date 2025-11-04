@@ -1,5 +1,5 @@
-from models.base_model import BaseModel
-from user import User
+from app.models.base_model import BaseModel
+from app.models.user import User
 
 class Place(BaseModel):
     """Place entity class."""

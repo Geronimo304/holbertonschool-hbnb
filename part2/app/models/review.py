@@ -1,6 +1,6 @@
-from models.base_model import BaseModel
-from user import User
-from place import Place
+from app.models.base_model import BaseModel
+from app.models.user import User
+from app.models.place import Place
 
 class Review(BaseModel):
     """Review entity class."""
@@ -22,19 +22,19 @@ class Review(BaseModel):
     def text(self, text):
         if not text:
             raise ValueError("Text cannot be empty.")
-        return text
+        self._text = text
 
     @property
     def rating(self):
-        return slef._rating
+        return self._rating
 
     @rating.setter
-    def rating(self, rating):
-        if not 1 <= rating <= 5:
+    def rating(self, value):
+        if not 1 <= value <= 5:
             raise ValueError("Rating must be between 1 and 5.")
-        return rating
+        self._rating = value
     
-    @property
+    @property #este getter y setter no se si va
     def user(self): 
         return self._user
 
@@ -44,7 +44,7 @@ class Review(BaseModel):
             raise TypeError("User must be a User instance.")
         return user
 
-    @property
+    @property # este tampoco se si va
     def place(self):
         return self._place
 
