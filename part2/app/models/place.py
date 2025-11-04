@@ -13,8 +13,6 @@ class Place(BaseModel):
         self.latitude = latitude
         self.longitude = longitude
         self.owner = owner
-
-        # Relaciones en memoria no esoy segura si esto va
         self.reviews = []     # lista de reviews asociadas
         self.amenities = []   # lista de amenities asociadas
         owner.add_place(self)  # agrega este place al usuario automáticamente

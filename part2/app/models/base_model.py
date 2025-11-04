@@ -20,7 +20,6 @@ class BaseModel:
 
     def to_dict(self):
         """Return a dictionary representation of the instance."""
-
         dictionary = self.__dict__.copy()
         # Convert datetime objects to ISO format strings
         dictionary['created_at'] = self.created_at.isoformat()
