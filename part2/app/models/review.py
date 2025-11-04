@@ -8,10 +8,10 @@ class Review(BaseModel):
 
     def __init__(self, text: str, rating: int, user: User, place: Place):
         super().__init__()
-        self.text = self.text
-        self.rating = self.rating
-        self.user = self.user
-        self.place = self.place
+        self.text = text
+        self.rating = rating
+        self.user = user
+        self.place = place
         place.add_review(self)
 
     @property
@@ -23,7 +23,7 @@ class Review(BaseModel):
         if not text:
             raise ValueError("Text cannot be empty.")
         return text
-        
+
     @property
     def rating(self):
         return slef._rating
