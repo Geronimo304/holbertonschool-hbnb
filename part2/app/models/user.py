@@ -47,11 +47,6 @@ class User(BaseModel):
                 setattr(self, key, value)
         self.updated_at = datetime.utcnow()
         self.validate()
-    
-    def create_place(self, title, description, price, latitude, longitude):
-        new_place = Place(title, description, price, latitude, longitude)
-        self.places.append(new_place.id)
-        new_place.owner = self.id
 
     def __repr__(self):
         return f"<User {self.first_name} {self.last_name} ({self.email})>"

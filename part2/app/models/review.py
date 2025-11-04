@@ -34,7 +34,7 @@ class Review(BaseModel):
             raise ValueError("Rating must be between 1 and 5.")
         self._rating = value
     
-    @property #este getter y setter no se si va
+    @property
     def user(self): 
         return self._user
 
