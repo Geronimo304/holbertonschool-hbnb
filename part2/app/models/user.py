@@ -21,6 +21,7 @@ class User(BaseModel):
     def first_name(self, value):
         if not self.first_name or len(self.first_name) > 50:
             raise ValueError("El nombre es obligatorio y debe tener menos de 50 caracteres.")
+        self._first_name = value
     
     @property
     def last_name(self):
@@ -30,6 +31,7 @@ class User(BaseModel):
     def last_name(self, value):
         if not self.last_name or len(self.last_name) > 50:
             raise ValueError("El apellido es obligatorio y debe tener menos de 50 caracteres.")
+        self._last_name = value
 
     @property
     def email(self):
@@ -39,6 +41,7 @@ class User(BaseModel):
     def email(self, value):
         if not self.email or "@" not in self.email:
             raise ValueError("El email es obligatorio y debe tener un formato válido.")
+        self._email = value
     
 
     def update(self, **kwargs):
