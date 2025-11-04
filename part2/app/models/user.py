@@ -1,6 +1,7 @@
 from datetime import datetime
 from models.base_model import BaseModel
 import uuid
+from models.place import Place 
 
 
 class User(BaseModel):
@@ -15,6 +16,7 @@ class User(BaseModel):
         self.is_admin = is_admin
         self.places = [] # esto no se si va 
         self.validate() # que hace validate sino son los setters
+
 
     @property
     def first_name(self):
@@ -51,10 +53,10 @@ class User(BaseModel):
         self.updated_at = datetime.utcnow()
         self.validate()
     
-    def add_place(self, place):
-        #if place not in self.places:
-        #    self.places.append(place)
-        pass
+    def create_place(self, title, description, price, latitude, longitude):
+        new_place = Place(title, description, price, latitude, longitude)
+        self.places.append(new_place.id)
+        new_place.owner = self.id
 
     def __repr__(self):
         return f"<User {self.first_name} {self.last_name} ({self.email})>"
