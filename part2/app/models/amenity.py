@@ -8,11 +8,18 @@ class Amenity(BaseModel):
         super().__init__()  # Hereda id, created_at, updated_at
         self.name = self._validate_name(name)
 
-    def _validate_name(self, name):
-        if not name or len(name) > 50:
-            raise ValueError("Name must be between 1 and 50 characters.")
-        return name
+    # getters y setters
+    @property
+    def name(self):
+        return self._name
 
+    @name.setter
+    def name(self, text):
+        if not text or len(text) > 50:
+            raise ValueError("Name must be between 1 and 50 characters.")
+        self._name = text
+
+    # Metodos
     def edit_amenity(self, **kwargs):
         for key, value in kwargs.items():
             if hasattr(self, key) and key != "id":
