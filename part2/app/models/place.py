@@ -17,7 +17,7 @@ class Place(BaseModel):
         self.amenities = []   # lista de amenities asociadas
         owner.add_place(self)  # agrega este place al usuario automáticamente
    
-    # valiadaciones automaticas
+
     @property
     def price(self):
         return self._price
@@ -56,8 +56,8 @@ class Place(BaseModel):
         self.save()
 
     def add_amenity(self, amenity):
-        #if amenity not in self.amenities:
-        #    self.amenities.append(amenity)
+        if amenity not in self.amenities:
+            self.amenities.append(amenity)
         pass
     
     def add_review(self, review):

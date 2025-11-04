@@ -44,7 +44,7 @@ class Review(BaseModel):
             raise TypeError("User must be a User instance.")
         return user
 
-    @property # este tampoco se si va
+    @property
     def place(self):
         return self._place
 

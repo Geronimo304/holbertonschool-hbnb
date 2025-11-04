@@ -1,7 +1,5 @@
 from datetime import datetime
 from app.models.base_model import BaseModel
-import uuid
-from app.models.place import Place 
 
 
 class User(BaseModel):
@@ -14,9 +12,6 @@ class User(BaseModel):
         self.last_name = last_name
         self.email = email
         self.is_admin = is_admin
-        self.places = [] # esto no se si va 
-        self.validate() # que hace validate sino son los setters
-
 
     @property
     def first_name(self):
