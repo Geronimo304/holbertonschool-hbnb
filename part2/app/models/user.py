@@ -19,7 +19,7 @@ class User(BaseModel):
 
     @first_name.setter
     def first_name(self, value):
-        if not self.first_name or len(self.first_name) > 50:
+        if not value or len(value) > 50:
             raise ValueError("El nombre es obligatorio y debe tener menos de 50 caracteres.")
         self._first_name = value
     
@@ -29,7 +29,7 @@ class User(BaseModel):
 
     @last_name.setter
     def last_name(self, value):
-        if not self.last_name or len(self.last_name) > 50:
+        if not value or len(value) > 50:
             raise ValueError("El apellido es obligatorio y debe tener menos de 50 caracteres.")
         self._last_name = value
 
@@ -39,7 +39,7 @@ class User(BaseModel):
 
     @email.setter 
     def email(self, value):
-        if not self.email or "@" not in self.email:
+        if not value or "@" not in value:
             raise ValueError("El email es obligatorio y debe tener un formato válido.")
         self._email = value
     
