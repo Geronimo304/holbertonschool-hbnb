@@ -38,3 +38,19 @@ class UserResource(Resource):
         if not user:
             return {'error': 'User not found'}, 404
         return {'id': user.id, 'first_name': user.first_name, 'last_name': user.last_name, 'email': user.email}, 200
+
+@api.route('/<user_email>')
+class UserEmailResource(Resource):
+    @api.response(200, 'User details retrieved successfully')
+    @api.response(404, 'No User found with matching email')
+    def get(self, user_email):
+        '''Get User details by email'''
+        user = facade.get_user_by_email(user_email)
+        if not user:
+            return {'Error': 'No User found with matching email'}, 404
+        return {
+            'id': user.id,
+            'first_name': user.first_name, 
+            'last_name': user.last_name, 
+            'email': user.email
+        }
