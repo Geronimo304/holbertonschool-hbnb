@@ -1,4 +1,4 @@
-from app import db  # Assuming you have set up SQLAlchemy in your Flask app
+from app import db
 from app.models.user import User
 from app.models.place import Place
 from app.models.amenity import Amenity

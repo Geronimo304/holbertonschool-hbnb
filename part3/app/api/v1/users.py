@@ -33,7 +33,7 @@ class UserList(Resource):
             'last_name': new_user.last_name,
             'email': new_user.email
             }, 201
-
+#PARA QUE SIRVE ESTO
 @api.route('/<user_id>')
 class UserResource(Resource):
     @api.response(200, 'User details retrieved successfully')
