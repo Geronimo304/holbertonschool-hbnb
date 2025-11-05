@@ -6,11 +6,12 @@ class User(BaseModel):
     """User entity class."""
 
 
-    def __init__(self, first_name: str, last_name: str, email: str, is_admin: bool = False):
+    def __init__(self, first_name: str, last_name: str, email: str, password: str is_admin: bool = False):
         super().__init__()
         self._first_name = first_name
         self._last_name = last_name
         self._email = email
+        self._password = password
         self._is_admin = is_admin
 
     @property
@@ -43,7 +44,22 @@ class User(BaseModel):
             raise ValueError("El email es obligatorio y debe tener un formato válido.")
         self._email = value
     
+    @property
+    def password(self):
+        return self._password
 
+    @password.setter
+    def password(self, new_password):
+        self.hash_password(new_password)
+
+    def hash_password(self, password):
+    """Hashes the password before storing it."""
+    self._password = bcrypt.generate_password_hash(password).decode('utf-8')
+
+    def verify_password(self, password):
+    """Verifies if the provided password matches the hashed password."""
+    return bcrypt.check_password_hash(self.password, password)
+    
     def update(self, **kwargs):
         for key, value in kwargs.items():
             if hasattr(self, key):
