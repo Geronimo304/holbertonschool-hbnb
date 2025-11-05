@@ -1,12 +1,13 @@
 from datetime import datetime
 from app.models.base_model import BaseModel
+from flask_bcrypt import bcrypt
 
 
 class User(BaseModel):
     """User entity class."""
 
 
-    def __init__(self, first_name: str, last_name: str, email: str, password: str is_admin: bool = False):
+    def __init__(self, first_name: str, last_name: str, email: str, password: str, is_admin: bool = False):
         super().__init__()
         self._first_name = first_name
         self._last_name = last_name
@@ -53,12 +54,12 @@ class User(BaseModel):
         self.hash_password(new_password)
 
     def hash_password(self, password):
-    """Hashes the password before storing it."""
-    self._password = bcrypt.generate_password_hash(password).decode('utf-8')
+        """Hashes the password before storing it."""
+        self._password = bcrypt.generate_password_hash(password).decode('utf-8')
 
     def verify_password(self, password):
-    """Verifies if the provided password matches the hashed password."""
-    return bcrypt.check_password_hash(self.password, password)
+        """Verifies if the provided password matches the hashed password."""
+        return bcrypt.check_password_hash(self.password, password)
     
     def update(self, **kwargs):
         for key, value in kwargs.items():
