@@ -29,9 +29,11 @@ class ReviewList(Resource):
             return {'error': str(e)}, 400
 
     @api.response(200, 'List of reviews retrieved successfully')
+    
     def get(self):
         """Retrieve a list of all reviews"""
         reviews = facade.get_all_reviews()
+        #CHEQUEAR ESTA LOGICA
         return [
             {
                 'id': r.id,
