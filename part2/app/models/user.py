@@ -11,7 +11,7 @@ class User(BaseModel):
         self._first_name = first_name
         self._last_name = last_name
         self._email = email
-        self.is_admin = is_admin
+        self._is_admin = is_admin
 
     @property
     def first_name(self):

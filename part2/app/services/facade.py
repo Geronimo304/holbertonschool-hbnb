@@ -20,7 +20,7 @@ class HBnBFacade:
         return self.user_repo.get(user_id)
 
     def get_user_by_email(self, email):
-        return self.user_repo.get_by_attribute('_email', email)
+        return self.user_repo.get_by_attribute('email', email)
 
     #---------- AMENITIES ----------
     def create_amenity(self, amenity_data):
