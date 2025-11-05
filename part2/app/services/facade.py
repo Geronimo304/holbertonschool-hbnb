@@ -70,9 +70,9 @@ class HBnBFacade:
 
     def get_all_reviews(self):
         return self.review_repo.get_all()
-# NO SE SI FUNCIONA A CHECKEAR
+
     def get_reviews_by_place(self, place_id):
-        return for r in self.review_repo.get_all() if self.review_repo.get_by_attribute('place', place_id) = place_id 
+    return [review for review in self.review_repo.get_all() if review.place == place_id]
 
     def update_review(self, review_id, review_data):
         review = self.get_review(review_id)
