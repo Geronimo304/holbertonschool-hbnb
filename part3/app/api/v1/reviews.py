@@ -33,7 +33,6 @@ class ReviewList(Resource):
     def get(self):
         """Retrieve a list of all reviews"""
         reviews = facade.get_all_reviews()
-        #CHEQUEAR ESTA LOGICA
         return [
             {
                 'id': r.id,

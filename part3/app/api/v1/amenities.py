@@ -8,6 +8,11 @@ amenity_model = api.model('Amenity', {
     'name': fields.String(required=True, description='Name of the amenity')
 })
 
+amenity_output_model = api.model('AmenityOutput', {
+    'id': fields.String(description='Amenity ID'),
+    'name': fields.String(description='Name of the amenity')
+})
+
 @api.route('/')
 class AmenityList(Resource):
     @api.expect(amenity_model)
@@ -15,14 +20,18 @@ class AmenityList(Resource):
     @api.response(400, 'Invalid input data')
     def post(self):
         """Register a new amenity"""
-        # Placeholder for the logic to register a new amenity
-        pass
+         amenity_data = api.payload
+        try:
+            new_amenity = facade.create_amenity(amenity_data)
+            return new_amenity, 201
+        except Exception as e:
+            return {'error': str(e)}, 400
 
     @api.response(200, 'List of amenities retrieved successfully')
     def get(self):
         """Retrieve a list of all amenities"""
-        # Placeholder for logic to return a list of all amenities
-        pass
+        amenities = facade.get_all_amenities()
+        return amenities, 200
 
 @api.route('/<amenity_id>')
 class AmenityResource(Resource):
@@ -30,8 +39,10 @@ class AmenityResource(Resource):
     @api.response(404, 'Amenity not found')
     def get(self, amenity_id):
         """Get amenity details by ID"""
-        # Placeholder for the logic to retrieve an amenity by ID
-        pass
+          amenity = facade.get_amenity(amenity_id)
+        if not amenity:
+            return {'error': 'Amenity not found'}, 404
+        return amenity, 200
 
     @api.expect(amenity_model)
     @api.response(200, 'Amenity updated successfully')
@@ -39,5 +50,8 @@ class AmenityResource(Resource):
     @api.response(400, 'Invalid input data')
     def put(self, amenity_id):
         """Update an amenity's information"""
-        # Placeholder for the logic to update an amenity by ID
-        pass
+        amenity_data = api.payload
+        updated_amenity = facade.update_amenity(amenity_id, amenity_data)
+        if not updated_amenity:
+            return {'error': 'Amenity not found'}, 404
+        return updated_amenity, 200
