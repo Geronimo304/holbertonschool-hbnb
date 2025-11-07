@@ -1,9 +1,19 @@
 from app.models.base_model import BaseModel
 from app.models.user import User
+from app import db
 
 class Place(BaseModel):
     """Place entity class."""
 
+
+    __tablename__ = 'places'
+
+    _title = db.Column(db.String(50), nullable=False)
+    _description = db.Column(db.Text, nullable=False)
+    _price = db.Column(db.Float, nullable=False)
+    _latitude = db.Column(db.Float, nullable=False)
+    _longitude = db.Column(db.Float, nullable=False)
+    # Faltan Columnas
 
     def __init__(self, title: str, description: str, price: float, latitude: float, longitude: float, owner: User):
         super().__init__()  # hereda id, created_at, updated_at
