@@ -6,14 +6,15 @@ Define all common attributes and methods for other models
 
 from datetime import datetime
 import uuid
+from app import db
 
 
-class BaseModel:
-    def __init__(self):
-        """Initialize a new BaseModel instance."""
-        self.id = str(uuid.uuid4()) # Identificador único
-        self.created_at = datetime.utcnow() # Fecha de creación
-        self.updated_at = datetime.utcnow() # Fecha de última actualización
+class BaseModel(db.Model):
+    __abstract__ = True  # This ensures SQLAlchemy does not create a table for BaseModel
+
+    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     def save(self):
         self.updated_at = datetime.utcnow()
