@@ -34,25 +34,20 @@ class UserList(Resource):
             'email': new_user.email
             }, 201
 
+    @api.route('/<user_id>')
+    class UserResource(Resource):
+        @api.response(200, 'User details retrieved successfully')
+        @api.response(404, 'User not found')
+        @jwt_required()
 
-'''@api.route('/api/v1/auth/login')
-class UserLogin(Resource):
-    @api.response(200, 'User details retrieved successfully')
-    @api.response(400, 'Invalid input data')
-    @api.response(404, 'User not found')
-    def post(self, user_email, user_password):
-        pass'''
-
-
-
-#PARA QUE SIRVE ESTO
-@api.route('/<user_id>')
-class UserResource(Resource):
-    @api.response(200, 'User details retrieved successfully')
-    @api.response(404, 'User not found')
-    def get(self, user_id):
-        """Get user details by ID"""
-        user = facade.get_user(user_id)
-        if not user:
-            return {'error': 'User not found'}, 404
-        return {'id': user.id, 'first_name': user.first_name, 'last_name': user.last_name, 'email': user.email}, 200
+        def get(self, user_id):
+            """Get user details by ID"""
+            user = facade.get_user(user_id)
+            if not user:
+                return {'error': 'User not found'}, 404
+            return {
+                'id': user.id,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'email': user.email
+                }, 200
