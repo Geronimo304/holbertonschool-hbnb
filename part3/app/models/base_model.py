@@ -22,7 +22,7 @@ class BaseModel(db.Model):
     def to_dict(self):
         """Return a dictionary representation of the instance."""
         dictionary = self.__dict__.copy()
-        # Convert datetime objects to ISO format strings
+        dictionary.pop('_sa_instance_state', None)
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
         dictionary['__class__'] = self.__class__.__name__

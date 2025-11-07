@@ -3,7 +3,7 @@ from app.services import facade
 
 api = Namespace('places', description='Place operations')
 
-# Define the models for related entities
+# ---- MODELS -----
 amenity_model = api.model('PlaceAmenity', {
     'id': fields.String(description='Amenity ID'),
     'name': fields.String(description='Name of the amenity')
@@ -16,8 +16,7 @@ user_model = api.model('PlaceUser', {
     'email': fields.String(description='Email of the owner')
 })
 
-# Define the place model for input validation and documentation
-place_model_output = api.model('Place', {
+place_output_model = api.model('Place', {
     'title': fields.String(required=True, description='Title of the place'),
     'description': fields.String(description='Description of the place'),
     'price': fields.Float(required=True, description='Price per night'),
@@ -27,7 +26,7 @@ place_model_output = api.model('Place', {
     'amenities': fields.List(fields.String, required=True, description="List of amenities ID's")
 })
 
-place_model = api.model('Place', {
+place_input_model = api.model('Place', {
     'title': fields.String(required=True, description='Title of the place'),
     'description': fields.String(description='Description of the place'),
     'price': fields.Float(required=True, description='Price per night'),
@@ -39,36 +38,35 @@ place_model = api.model('Place', {
     'reviews': fields.List(fields.Nested(review_model), description='List of reviews')
 })
 
-# Adding the review model
 review_model = api.model('PlaceReview', {
     'id': fields.String(description='Review ID'),
     'text': fields.String(description='Text of the review'),
     'rating': fields.Integer(description='Rating of the place (1-5)'),
     'user_id': fields.String(description='ID of the user')
 })
+
 # ---- RUTAS -----
 
 @api.route('/')
 class PlaceList(Resource):
-    @api.expect(place_model)
+    @api.expect(place_input_model)
     @api.response(201, 'Place successfully created')
     @api.response(400, 'Invalid input data')
-     @jwt_required()
+    @jwt_required()
 
     def post(self):
-        """Register a new place"""
+        #Register a new place
         place_data = api.payload
         try:
             new_place = facade.create_place(place_data)
             return {
-                'id': new_review.id,
-                'message': "Review created successfully"
+                'id': new_place.id,
+                'message': "Place created successfully"
             }, 201
         except Exception as e:
             return {'error': str(e)}, 400
 
     @api.response(200, 'List of places retrieved successfully')
-    
     def get(self):
         """Retrieve a list of all places"""
         places = facade.get_all_places()
