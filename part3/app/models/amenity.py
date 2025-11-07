@@ -1,12 +1,14 @@
 from app.models.base_model import BaseModel
+from app import db
+
 
 class Amenity(BaseModel):
     """Amenity entity class."""
 
 
-    def __init__(self, name: str):
-        super().__init__()  # Hereda id, created_at, updated_at
-        self.name = self._validate_name(name)
+    __tablename__ = 'amenities'
+
+    _name = db.Column(db.String(30), nullable=False)
 
     # getters y setters
     @property

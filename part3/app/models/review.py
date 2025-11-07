@@ -1,18 +1,17 @@
 from app.models.base_model import BaseModel
 from app.models.user import User
 from app.models.place import Place
+from app import db
 
 class Review(BaseModel):
     """Review entity class."""
 
+    __tablename__ = 'reviews'
 
-    def __init__(self, text: str, rating: int, user: User, place: Place):
-        super().__init__()
-        self.text = text
-        self.rating = rating
-        self.user = user
-        self.place = place
-        place.add_review(self)
+    _text = db.Column(db.Text, nullable=False)
+    _rating = db.Column(db.Int, nullable=False)
+    _user = db.Column(db.String(36), db.Foreignkey('users.id'), nullable=False)
+    _place = db.Column(db.String(36), db.Foreignkey('places.id'), nullable=False)
 
     @property
     def text(self):
