@@ -9,9 +9,9 @@ class Review(BaseModel):
     __tablename__ = 'reviews'
 
     _text = db.Column(db.Text, nullable=False)
-    _rating = db.Column(db.Int, nullable=False)
-    _user = db.Column(db.String(36), db.Foreignkey('users.id'), nullable=False)
-    _place = db.Column(db.String(36), db.Foreignkey('places.id'), nullable=False)
+    _rating = db.Column(db.Integer, nullable=False)
+    _user = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False)
+    _place = db.Column(db.String(36), db.ForeignKey('places.id'), nullable=False)
 
     @property
     def text(self):
