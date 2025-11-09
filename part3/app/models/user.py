@@ -1,7 +1,6 @@
 from datetime import datetime
 from app.models.base_model import BaseModel
-from flask_bcrypt import bcrypt
-from app import db
+from app import db, bcrypt
 
 
 class User(BaseModel):
