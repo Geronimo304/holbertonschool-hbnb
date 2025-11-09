@@ -1,6 +1,6 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required
 
 api = Namespace('places', description='Place operations')
 
@@ -60,14 +60,12 @@ class PlaceList(Resource):
         # Register a new place
         try:
             current_user = get_jwt()
-            user_id = current_user.get('íd')
+            user_id = current_user.get('id')
             if not user_id:
                 return {'error': 'Unauthorized action'}, 403
             
             place_data = api.payload or {}
-            place_data.get('owner_id') != current_user:
-                return {'error': 'Unauthorized action'}, 403
-
+            place_data['owner_id'] = user_id
             new_place = facade.create_place(place_data)
             return {
                 'id': new_place.id,
@@ -76,12 +74,15 @@ class PlaceList(Resource):
         except Exception as e:
             return {'error': str(e)}, 400
 
+
     @api.response(200, 'List of places retrieved successfully')
     def get(self):
         """Retrieve a list of all places"""
-        places = facade.get_all_places()
-        return places, 200
-
+        try:
+            places = facade.get_all_places()
+            return [p.to_dict() for p in places], 200
+        except Exception as e:
+            return {'error': str(e)}, 400
 
 @api.route('/<place_id>')
 class PlaceResource(Resource):
@@ -108,7 +109,6 @@ class PlaceResource(Resource):
         try:
             current_user = get_jwt()
             user_id = current_user.get('id')
-            is_admin = current_user.get('is_admin', False)
 
             place = facade.get_place(place_id)
             if not place:

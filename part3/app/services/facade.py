@@ -12,6 +12,7 @@ class HBnBFacade:
         self.review_repo = SQLAlchemyRepository(Review)
         self.amenity_repo = SQLAlchemyRepository(Amenity)
 
+    # ---------- USERS ----------
     def create_user(self, user_data):
         user = User(**user_data)
         self.user_repo.add(user)
@@ -44,6 +45,7 @@ class HBnBFacade:
     #---------- PLACES ----------
     def create_place(self, place_data):
         place = Place(**place_data)
+        self.place_repo.add(place)
         return place
 
     def get_place(self, place_id):
@@ -62,6 +64,9 @@ class HBnBFacade:
     def create_review(self, review_data):
         user = self.get_user(review_data["user_id"])
         place = self.get_place(review_data["place_id"])
+        if not user or not place:
+            raise ValueError("User or Place not found")
+        
         review = Review(**review_data)
         self.review_repo.add(review)
         return review
