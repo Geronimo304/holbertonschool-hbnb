@@ -51,6 +51,7 @@ class UserResource(Resource):
             'email': user.email
             }, 200
 
+
 @api.route('/users/<user_id>')
 class AdminUserModify(Resource):
     @jwt_required()
@@ -67,15 +68,19 @@ class AdminUserModify(Resource):
             existing_user = facade.get_user_by_email(email)
             if existing_user and existing_user.id != user_id:
                 return {'error': 'Email already in use'}, 400
+        
+        updated_user = facade.update_user(user_id, data)
+        if not updated_user:
+            return {'error': 'User not found'}, 404
 
-        # Logic to update user details
-        pass
+        return {'message': 'User updated successfully'}, 200
+
 
 @api.route('/users/')
 class AdminUserCreate(Resource):
     @jwt_required()
     def post(self):
-        current_user = get_jwt_identity()
+        current_user = get_jwt()
         if not current_user.get('is_admin'):
             return {'error': 'Admin privileges required'}, 403
 
@@ -86,5 +91,8 @@ class AdminUserCreate(Resource):
         if facade.get_user_by_email(email):
             return {'error': 'Email already registered'}, 400
 
-        # Logic to create a new user
-        pass
+        new_user = facade.create_user(user_data)
+        return {
+            'id': new_user.id,
+            'message': 'User created successfully by admin'
+        }, 201
