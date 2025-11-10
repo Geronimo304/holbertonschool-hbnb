@@ -97,7 +97,7 @@ class PlaceResource(Resource):
             return place.to_dict(), 200
         except Exception as e:
             return {'error': str(e)}, 400
-
+   
     @jwt_required()
     @api.expect(place_input_model)
     @api.response(200, 'Place updated successfully')

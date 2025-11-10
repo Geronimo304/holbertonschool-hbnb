@@ -2,6 +2,13 @@ from app.models.base_model import BaseModel
 from app.models.user import User
 from app import db
 
+
+place_amenity = db.Table(
+    'place_amenity',
+    db.Column('place_id', db.String(36), db.ForeignKey('places.id'), primary_key=True),
+    db.Column('amenity_id', db.String(36), db.ForeignKey('amenities.id'), primary_key=True)
+)
+
 class Place(BaseModel):
     """Place entity class."""
 
@@ -15,7 +22,18 @@ class Place(BaseModel):
     _longitude = db.Column(db.Float, nullable=False)
     # Faltan Columnas
 
-    def __init__(self, title: str, description: str, price: float, latitude: float, longitude: float, owner: User):
+    user_id = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False)
+      # Relaciones ORM automáticas:
+    reviews = db.relationship('Review', backref='place', lazy=True)  # One-to-Many
+    amenities = db.relationship(
+        'Amenity',
+        secondary=place_amenity,
+        backref=db.backref('places', lazy=True),
+        lazy='subquery'
+    )
+
+
+    def __init__(self, title: str, description: str, price: float, latitude: float, longitude: float, owner: User, user_id):
         super().__init__()  # hereda id, created_at, updated_at
         self.title = title
         self.description = description
@@ -23,9 +41,10 @@ class Place(BaseModel):
         self.latitude = latitude
         self.longitude = longitude
         self.owner = owner
-        self.reviews = []     # lista de reviews asociadas
-        self.amenities = []   # lista de amenities asociadas
-        owner.add_place(self)  # agrega este place al usuario automáticamente
+        self.user_id = user_id
+        #self.reviews = []     # lista de reviews asociadas
+        #self.amenities = []   # lista de amenities asociadas
+        #owner.add_place(self)  # agrega este place al usuario automáticamente
    
 
     @property
