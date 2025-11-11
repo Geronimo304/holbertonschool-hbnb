@@ -58,8 +58,8 @@ class AdminUserModify(Resource):
     def put(self, user_id):
         current_user = get_jwt()
         user_id = current_user.get('id')
-            if not user_id:
-                return {'error': 'Unauthorized action'}, 403
+        if not user_id:
+            return {'error': 'Unauthorized action'}, 403
 
         data = api.payload or {}
         email = data.get('email')

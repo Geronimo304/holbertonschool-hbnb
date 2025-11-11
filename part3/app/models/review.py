@@ -3,11 +3,11 @@ from app.models.user import User
 from app.models.place import Place
 from app import db
 
-review = db.Table(
-    'reviews',
-    #db.Column('place_id', db.String(36), db.ForeignKey('places.id'), primary_key=True),
-    #db.Column('amenity_id', db.String(36), db.ForeignKey('amenities.id'), primary_key=True)
-)
+# review = db.Table(
+#     'reviews',
+#     db.Column('place_id', db.String(36), db.ForeignKey('places.id'), primary_key=True),
+#     db.Column('amenity_id', db.String(36), db.ForeignKey('amenities.id'), primary_key=True)
+# )
 
 class Review(BaseModel):
     """Review entity class."""
