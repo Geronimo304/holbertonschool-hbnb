@@ -24,7 +24,7 @@ class ReviewList(Resource):
         # Register a new review
         try:
             review_data = api.payload
-            user_id = get_jwt_identity()
+            user_id = get_jwt()
             if not user_id:
                 return {'error': 'Unauthorized action'}, 403
             review_data['user_id'] = user_id

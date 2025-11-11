@@ -1,6 +1,6 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt
 
 api = Namespace('users', description='User operations')
 
@@ -57,10 +57,11 @@ class AdminUserModify(Resource):
     @jwt_required()
     def put(self, user_id):
         current_user = get_jwt()
-        if not current_user.get('is_admin'):
-            return {'error': 'Admin privileges required'}, 403
+        user_id = current_user.get('id')
+            if not user_id:
+                return {'error': 'Unauthorized action'}, 403
 
-        data = request.json
+        data = api.payload or {}
         email = data.get('email')
 
         # Ensure email uniqueness
@@ -80,19 +81,23 @@ class AdminUserModify(Resource):
 class AdminUserCreate(Resource):
     @jwt_required()
     def post(self):
-        current_user = get_jwt()
-        if not current_user.get('is_admin'):
-            return {'error': 'Admin privileges required'}, 403
+        try: 
+            current_user = get_jwt()
+            user_id = current_user.get('id')
+            if not current_user.get('is_admin'):
+                return {'error': 'Admin privileges required'}, 403
 
-        user_data = request.json
-        email = user_data.get('email')
+            user_data = api.payload or {}
+            email = user_data.get('email')
 
-        # Check if email is already in use
-        if facade.get_user_by_email(email):
-            return {'error': 'Email already registered'}, 400
+            # Check if email is already in use
+            if facade.get_user_by_email(email):
+                return {'error': 'Email already registered'}, 400
 
-        new_user = facade.create_user(user_data)
-        return {
-            'id': new_user.id,
-            'message': 'User created successfully by admin'
-        }, 201
+            new_user = facade.create_user(user_data)
+            return {
+                'id': new_user.id,
+                'message': 'User created successfully by admin'
+            }, 201
+        except Exception as e:
+            return {'error': str(e)}, 400
