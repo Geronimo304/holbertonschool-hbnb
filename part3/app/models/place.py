@@ -24,13 +24,13 @@ class Place(BaseModel):
 
     user_id = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False)
       # Relaciones ORM automáticas:
-    reviews = db.relationship('Review', backref='place', lazy=True)  # One-to-Many
-    amenities = db.relationship(
-        'Amenity',
-        secondary=place_amenity,
-        backref=db.backref('places', lazy=True),
-        lazy='subquery'
-    )
+    # reviews = db.relationship('Review', backref='place', lazy=True)  # One-to-Many
+    # amenities = db.relationship(
+    #     'Amenity',
+    #     secondary=place_amenity,
+    #     backref=db.backref('places', lazy=True),
+    #     lazy='subquery'
+    # )
 
 
     def __init__(self, title: str, description: str, price: float, latitude: float, longitude: float, owner: User, user_id):
