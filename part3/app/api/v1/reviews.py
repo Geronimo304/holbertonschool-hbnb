@@ -64,14 +64,14 @@ class ReviewResource(Resource):
             review = facade.get_review(review_id)
             if not review:
                 return {'error': 'Review not found'}, 404
-        return {
-            'id': review.id,
-            'text': review.text,
-            'rating': review.rating,
-            'user_id': review.user_id,
-            'place_id': review.place_id
-        }, 200
-        
+            return {
+                'id': review.id,
+                'text': review.text,
+                'rating': review.rating,
+                'user_id': review.user_id,
+                'place_id': review.place_id
+            }, 200
+
         except Exception as e:
             return {'error': str(e)}, 500
 
