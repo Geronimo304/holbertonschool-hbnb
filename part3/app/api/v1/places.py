@@ -109,6 +109,8 @@ class PlaceResource(Resource):
         try:
             current_user = get_jwt()
             user_id = current_user.get('id')
+            if not user_id:
+                return {'error': 'Unauthorized action'}, 403
 
             place = facade.get_place(place_id)
             if not place:
