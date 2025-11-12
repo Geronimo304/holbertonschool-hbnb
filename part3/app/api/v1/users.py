@@ -92,6 +92,7 @@ class AdminUserCreate(Resource):
         # Administrador crea usuario
         try: 
             current_user = get_jwt()
+            user_id = current_user.get('id')
             if not current_user.get('is_admin'):
                 return {'error': 'Admin privileges required'}, 403
 
@@ -99,7 +100,7 @@ class AdminUserCreate(Resource):
             email = user_data.get('email')
 
             if email:
-            existing_user = facade.get_user_by_email(email)
+                existing_user = facade.get_user_by_email(email)
             if existing_user and existing_user.id != user_id:
                 return {'error': 'Email already in use'}, 400
 
