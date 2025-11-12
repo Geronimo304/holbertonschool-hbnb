@@ -52,8 +52,12 @@ class UserResource(Resource):
             }, 200
 
 
-@api.route('/users/<user_id>')
+@api.route('/<user_id>')
 class AdminUserModify(Resource):
+    @api.response(403, 'Unauthorized action')
+    @api.response(400, 'Email already in use')
+    @api.response(404, 'User not found')
+    @api.response(200, 'User updated successfully')
     @jwt_required()
     def put(self, user_id):
         current_user = get_jwt()
@@ -77,8 +81,10 @@ class AdminUserModify(Resource):
         return {'message': 'User updated successfully'}, 200
 
 
-@api.route('/users/')
+@api.route('/')
 class AdminUserCreate(Resource):
+    @api.expect()
+    @api.response(403)
     @jwt_required()
     def post(self):
         try: 
