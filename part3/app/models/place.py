@@ -22,15 +22,18 @@ class Place(BaseModel):
     _longitude = db.Column(db.Float, nullable=False)
     # Faltan Columnas
 
+    # FOREIGNKEY
+   
     user_id = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False)
-      # Relaciones ORM automáticas:
-    # reviews = db.relationship('Review', backref='place', lazy=True)  # One-to-Many
-    # amenities = db.relationship(
-    #     'Amenity',
-    #     secondary=place_amenity,
-    #     backref=db.backref('places', lazy=True),
-    #     lazy='subquery'
-    # )
+    
+    # Relaciones ORM automáticas
+    reviews = db.relationship('Review', backref='place', lazy=True)  # One-to-Many
+    amenities = db.relationship(
+        'Amenity',
+        secondary=place_amenity,
+        backref=db.backref('places', lazy=True),
+        lazy='subquery'
+    )
 
 
     def __init__(self, title: str, description: str, price: float, latitude: float, longitude: float, owner: User, user_id):
@@ -42,10 +45,18 @@ class Place(BaseModel):
         self.longitude = longitude
         self.owner = owner
         self.user_id = user_id
-        #self.reviews = []     # lista de reviews asociadas
-        #self.amenities = []   # lista de amenities asociadas
-        #owner.add_place(self)  # agrega este place al usuario automáticamente
    
+
+    @property
+    def title(self):
+        return self._title
+    
+    
+    @title.setter
+    def title(self, value):
+        if not value:
+            raise ValueError("Title cannot be empty")
+        self._title = value
 
     @property
     def price(self):
@@ -66,6 +77,16 @@ class Place(BaseModel):
         if not isinstance(value, (int, float)) or not -90 <= value <= 90:
             raise ValueError("Latitude must be between -90 and 90.")
         self._latitude = float(value)
+
+    @property
+    def description(self):
+        return self._description
+
+    @description.setter
+    def description(self, value):
+        if not value or not isinstance(value, str):
+            raise ValueError("Description must be a non-empty string.")
+        self._description = value
 
     @property
     def longitude(self):
